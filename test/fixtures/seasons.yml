@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_date: 2015-05-23
+  match_frequency: MyString
+  league_id: 1
+
+two:
+  start_date: 2015-05-23
+  match_frequency: MyString
+  league_id: 1
