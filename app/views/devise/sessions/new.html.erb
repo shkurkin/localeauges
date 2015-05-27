@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Localeagues</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="login-body">
+  <div class="container">
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-account form-signin'}) do |f| %>
+      <h2 class="form-signin-heading">sign in now</h2>
+      <div class="login-wrap">
+        <% if alert %>
+          <div class="alert alert-block alert-danger fade in"><strong><%= alert %></strong></div>
+        <% end %>
+        <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "email" %>
+        <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "password" %>
+
+        <% if devise_mapping.rememberable? -%>
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, class: "checkbox" %>
+        <% end -%>
+
+        <%= f.submit "Log in", class: "btn btn-lg btn-login btn-block" %>
+        <div class="registration">
+          Don't have an account yet?
+          <%= link_to "Create an account", new_registration_path(resource_name) %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</body>
+</html>

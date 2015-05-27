@@ -15,3 +15,13 @@
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore application configuration
+/config/application.yml
+
+# Ignore precompiled assets
+/public/assets/
+
+# Ignore sensitive files for deploy
+database.yml
+secrets.yml
