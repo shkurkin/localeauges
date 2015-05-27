@@ -21,3 +21,7 @@
 
 # Ignore precompiled assets
 /public/assets/
+
+# Ignore sensitive files for deploy
+database.yml
+secrets.yml
