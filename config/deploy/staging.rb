@@ -1,4 +1,4 @@
-set :stage :staging
+set :stage, :staging
 
 role :app, %w{deploy@dev.localeagues.com}
 role :web, %w{deploy@dev.localeagues.com}
