@@ -1,3 +1,9 @@
+set :stage :staging
+
+role :app, %w{deploy@dev.localeagues.com}
+role :web, %w{deploy@dev.localeagues.com}
+role :db, %w{deploy@dev.localeagues.com}
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
