@@ -38,6 +38,8 @@ gem 'react-rails', '~> 1.0'
 gem 'gon', '~> 5.2.3'
 gem 'figaro', '~> 1.1.1'
 gem 'pg', '~> 0.18.2'
+gem 'puma', '~> 2.11.3'
+gem 'foreman', '~> 0.78.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
