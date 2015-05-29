@@ -27,7 +27,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn', '~> 4.9.0'
 
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
@@ -38,7 +38,6 @@ gem 'react-rails', '~> 1.0'
 gem 'gon', '~> 5.2.3'
 gem 'figaro', '~> 1.1.1'
 gem 'pg', '~> 0.18.2'
-gem 'puma', '~> 2.11.3'
 gem 'foreman', '~> 0.78.0'
 
 group :development, :test do
