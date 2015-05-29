@@ -31,6 +31,8 @@ gem 'unicorn', '~> 4.9.0'
 
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
+gem 'capistrano-rvm'
+gem 'capistrano-bundler', '~> 1.1.2'
 
 # GEMS ADDED
 gem 'devise', '3.4.1'
