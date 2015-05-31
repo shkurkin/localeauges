@@ -41,6 +41,7 @@ gem 'gon', '~> 5.2.3'
 gem 'figaro', '~> 1.1.1'
 gem 'pg', '~> 0.18.2'
 gem 'foreman', '~> 0.78.0'
+gem 'font-awesome-rails', '~> 4.3.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -57,6 +58,7 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'faker', '~> 1.4.3'
   gem 'capybara'
+  gem 'selenium-webdriver', '~> 2.45.0'
   gem 'database_cleaner'
   gem 'shoulda-matchers', '~>2.8.0'
   gem 'shoulda'

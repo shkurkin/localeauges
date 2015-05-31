@@ -1,0 +1,9 @@
+<div class="btn-group nav league-row" id="leagueSelect">
+  <button class="btn btn-white" type="button">Default</button>
+  <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="true"><span class="caret"></span></button>
+  <ul role="menu" class="dropdown-menu">
+    <% %w{foo bar baz bat}.each do |league| %>
+      <li><a href="#"><%= league %></a></li>
+    <% end %>
+  </ul>
+</div>

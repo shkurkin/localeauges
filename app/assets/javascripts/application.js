@@ -13,5 +13,11 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree ../../../vendor/assets/javascripts/.
+//= require bootstrap.js
+//= require jquery.dcjqaccordion.2.7.js
+//= require jquery.scrollTo.min.js
+//= require slidebars.min.js
+//= require jquery.nicescroll.js
+//= require respond.min.js
+//= require common-scripts.js
 //= require_tree .

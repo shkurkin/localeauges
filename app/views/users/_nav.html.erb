@@ -1,0 +1,26 @@
+<div class="top-nav ">
+  <ul class="nav pull-right top-menu">
+
+    <!-- user login dropdown start-->
+    <li class="dropdown">
+      <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+        <%= image_tag "avatar.png", alt: "Avatar"  %>
+        <span class="username"><%= @user.email %></span>
+        <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu extended logout">
+        <div class="log-arrow-up"></div>
+        <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
+        <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
+        <li><a href="mailto:eshkurkin@gmail.com?Subject=Your%20app%20is%20screwed%20up" target="_top"><i class="fa fa-life-ring"></i> Support</a></li>
+        <li>
+          <%= link_to destroy_user_session_path, :method => :delete, :"data-no-turbolink" => :true, id: 'logOut' do %>
+            <i class="fa fa-key"></i> Log Out
+          <% end %>
+        </li>
+      </ul>
+    </li>
+    <!-- user login dropdown end -->
+
+  </ul>
+</div>
