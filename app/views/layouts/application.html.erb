@@ -7,8 +7,39 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <section id="container">
+    <!-- Header -->
+    <header class="header white-bg">
+      <div class="sidebar-toggle-box">
+        <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
+      </div>
+      <%= render 'leagues/nav' %>
+      <%= render 'users/nav' %>
+    </header>
 
-<%= yield %>
+    <!-- Sidebar Navigation -->
+    <aside>
+      <div id="sidebar"  class="nav-collapse ">
+        <%= render 'layouts/menu'  %>
+      </div>
+    </aside>
 
+    <section id="main-content">
+      <section class="wrapper site-min-height">
+        <!-- page start-->
+        <%= yield %>
+        <!-- page end-->
+      </section>
+    </section>
+
+    <!-- Right Popout -->
+    <div class="sb-slidebar sb-right sb-style-overlay">
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+    </footer>
+
+  </section>
 </body>
 </html>

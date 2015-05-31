@@ -41,6 +41,7 @@ gem 'gon', '~> 5.2.3'
 gem 'figaro', '~> 1.1.1'
 gem 'pg', '~> 0.18.2'
 gem 'foreman', '~> 0.78.0'
+gem 'font-awesome-rails', '~> 4.3.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
