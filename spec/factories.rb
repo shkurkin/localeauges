@@ -6,9 +6,11 @@ FactoryGirl.define do
   end
 
   factory :team do
+    sequence(:name) { |n| "Team#{n}" }
   end
 
   factory :league do
+    sequence(:name) { |n| "League#{n}" }
   end
 
   factory :season do
