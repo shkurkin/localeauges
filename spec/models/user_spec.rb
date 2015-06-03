@@ -39,8 +39,11 @@ RSpec.describe User do
     end
   end
 
-  describe "team" do
+  describe "player team" do
     let(:user) { FactoryGirl.create(:user) }
 
+    it "should have an auto generated player team" do
+      expect(user.teams.first.player_team).to eq(true)
+    end
   end
 end

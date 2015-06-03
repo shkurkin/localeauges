@@ -23,6 +23,7 @@ FactoryGirl.define do
   end
 
   factory :match do
+    datetime
   end
 
   factory :result do
