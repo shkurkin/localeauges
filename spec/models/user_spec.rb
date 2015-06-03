@@ -4,6 +4,7 @@ RSpec.describe User do
   it { should have_and_belong_to_many(:teams) }
   it { should have_many(:messages) }
   it { should have_many(:leagues) }
+  it { should have_many(:matches) }
 
   describe "current league" do
     let(:user) { FactoryGirl.create(:user) }
@@ -36,5 +37,10 @@ RSpec.describe User do
       expect(user.current_league).to be_a(League)
       expect(user.current_league).to eq(league_2)
     end
+  end
+
+  describe "team" do
+    let(:user) { FactoryGirl.create(:user) }
+
   end
 end

@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :teams
   has_many :messages
   has_many :leagues, through: :teams
+  has_many :matches, through: :teams
+
+  after_save :add_player_team
 
   def  current_league
     return nil unless self.leagues.any?
@@ -16,5 +19,12 @@ class User < ActiveRecord::Base
   def current_league=(league)
     current_league_id = (league.respond_to? :id) ? league.id : league
     self.current_league_id = current_league_id.to_i
+  end
+
+  private
+
+  def add_player_team
+    team = Team.create(name: self.email, player_team: true)
+    self.teams << team
   end
 end
