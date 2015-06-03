@@ -92,6 +92,9 @@
 }
 
 @media (max-width: 768px) {
+    div.league-row {
+        margin-left: 0px;
+    }
 
     .header {
         position: absolute;

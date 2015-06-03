@@ -1,9 +1,17 @@
 <div class="btn-group nav league-row" id="leagueSelect">
-  <button class="btn btn-white" type="button">Default</button>
+  <button class="btn btn-white" type="button">
+    <% if @user.current_league %>
+      <%= @user.current_league.name %>
+    <% else %>
+      Join a League!
+    <% end %>
+  </button>
   <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button" aria-expanded="true"><span class="caret"></span></button>
   <ul role="menu" class="dropdown-menu">
-    <% @user.leagues.each do |league| %>
-      <li><a href="#"><%= league.name %></a></li>
+    <% @user.leagues.uniq.each do |league| %>
+      <% if league != @user.current_league %>
+        <li><a href="#"><%= league.name %></a></li>
+      <% end %>
     <% end %>
   </ul>
 </div>

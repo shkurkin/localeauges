@@ -6,4 +6,15 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :teams
   has_many :messages
   has_many :leagues, through: :teams
+
+  def  current_league
+    return nil unless self.leagues.any?
+    league_id = (self.current_league_id) ? self.current_league_id : self.leagues.order("created_at DESC").first
+    League.find_by_id(league_id)
+  end
+
+  def current_league=(league)
+    current_league_id = (league.respond_to? :id) ? league.id : league
+    self.current_league_id = current_league_id.to_i
+  end
 end
