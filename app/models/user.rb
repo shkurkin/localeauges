@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
 
   after_save :add_player_team
 
-  def  current_league
+  def current_league
     return nil unless self.leagues.any?
     league_id = (self.current_league_id) ? self.current_league_id : self.leagues.order("created_at DESC").first
     League.find_by_id(league_id)

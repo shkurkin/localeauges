@@ -7,6 +7,10 @@ class League < ActiveRecord::Base
 
   after_save :add_default_season
 
+  def default_season
+    self.seasons.where(league_default: true).first
+  end
+
   private
 
   def add_default_season
