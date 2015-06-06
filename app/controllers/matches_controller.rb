@@ -1,4 +1,10 @@
 class MatchesController < ApplicationController
+  before_action :set_user, only: [:new, :create]
+
+  def new
+    @match = Match.new
+  end
+
   def create
     @match = Match.new(match_params)
     team1 = Team.find(params[:team1_id])

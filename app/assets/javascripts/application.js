@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require react
+//= require react_ujs
+//= require fluxxor
 //= require bootstrap.js
 //= require jquery.dcjqaccordion.2.7.js
 //= require jquery.scrollTo.min.js

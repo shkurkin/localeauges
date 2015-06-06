@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :leagues, only: [:index, :show]
-  resources :matches, only: [:create]
+  resources :matches, only: [:create, :new]
 
   root to: "dashboard#index"
 
