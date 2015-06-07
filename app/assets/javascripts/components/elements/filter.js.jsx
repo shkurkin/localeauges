@@ -4,8 +4,7 @@ var Filter = React.createClass({
     itemTitleName: React.PropTypes.string,
     placeholder: React.PropTypes.string,
     containerSize: React.PropTypes.string,
-    itemLoadFunction: React.PropTypes.function,
-    itemClickFunction: React.PropTypes.function
+    itemClickFunction: React.PropTypes.func
   },
 
   getInitialState: function() {
@@ -13,7 +12,6 @@ var Filter = React.createClass({
   },
 
   updateFilter: function(e) {
-    this.props.itemLoadFunction(e.target.value);
     this.setState({filter: e.target.value});
   },
 
@@ -33,7 +31,7 @@ var Filter = React.createClass({
 
     return (
       <div className={this.props.containerSize + " select"}>
-        <input className="form-control search-input" autocomplete="off" placeholder={this.props.placeholder} onChange={this.updateFilter} />
+        <input className="form-control search-input" autoComplete="off" placeholder={this.props.placeholder} onChange={this.updateFilter} />
         <ul className="select-list">
           {items}
         </ul>

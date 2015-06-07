@@ -16,6 +16,8 @@
 //= require react
 //= require react_ujs
 //= require fluxxor
+//= require ./stores/new_match_store
+//= require ./stores/stores
 //= require bootstrap.js
 //= require jquery.dcjqaccordion.2.7.js
 //= require jquery.scrollTo.min.js

@@ -1,0 +1,24 @@
+/* NEW MATCH */
+
+ul.select-list {
+  border: 1px solid #e2e2e4;
+  height: 200px;
+  overflow-y: scroll;
+  border-radius: 3px;
+}
+
+ul.select-list li {
+  padding: 2px 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+ul.select-list li:hover {
+  background-color: #2A3542;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.search-input {
+  margin-bottom: 8px;
+}

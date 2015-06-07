@@ -3,6 +3,16 @@ class MatchesController < ApplicationController
 
   def new
     @match = Match.new
+    players = User.all.select('id', 'email').to_json
+    teams = Team.all.where('NOT player_team').select('id', 'name').to_json
+    gon.newMatch = {
+      players: players,
+      teams: teams,
+      t1Players: [],
+      t1Team: [],
+      t2Players: [],
+      t2Team: []
+    }
   end
 
   def create

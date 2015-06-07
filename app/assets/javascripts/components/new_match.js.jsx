@@ -2,24 +2,42 @@ var FluxMixin = Fluxxor.FluxMixin(React);
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var NewMatchInner = React.createClass({
-  mixins: [FluxMixin],
+  mixins: [FluxMixin, StoreWatchMixin("NewMatchStore")],
 
-  itemLoadFunction: function(filter){
-    console.log(filter);
+  getStateFromFlux: function() {
+    var flux = this.getFlux();
+    return flux.store("NewMatchStore").getState();
   },
 
-  itemClickFunction: function(e){
-    console.log(e.target.textContent);
+  addT1Player: function(e) {
+    var t = 't1';
+    var player = e.target.textContent;
+    var data = {t: t, player: player};
+    this.getFlux().actions.includePlayer(data);
+  },
+
+  addT1Team: function(e) {
+    var t = 't1';
+    var team = e.target.textContent;
+    var data = {t: t, team: team};
+    this.getFlux().actions.includeTeam(data);
+  },
+
+  addT2Player: function(e) {
+    var t = 't2';
+    var player = e.target.textContent;
+    var data = {t: t, player: player};
+    this.getFlux().actions.includePlayer(data);
+  },
+
+  addT2Team: function(e) {
+    var t = 't2';
+    var team = e.target.textContent;
+    var data = {t: t, team: team};
+    this.getFlux().actions.includeTeam(data);
   },
 
   render: function(){
-    var items = [
-      {title: "foo"},
-      {title: "bar"},
-      {title: "baz"},
-      {title: "bat"},
-      {title: "qux"}
-    ];
     var t1Tabs = [
       {'title': 'Players', 'id': 't1Players'},
       {'title': 'Teams', 'id': 't1Teams'}
@@ -29,7 +47,6 @@ var NewMatchInner = React.createClass({
       {'title': 'Players', 'id': 't2Players'},
       {'title': 'Teams', 'id': 't2Teams'}
     ];
-
     return(
       <div className="row">
         <div className="col-md-4">
@@ -45,12 +62,13 @@ var NewMatchInner = React.createClass({
               <div className="tab-content">
 
                 <div id="t1Players" className="tab-pane active">
-                  <Filter items={items} itemTitleName="title" placeholder="Add Players"  itemLoadFunction={this.itemLoadFunction} itemClickFunction={this.itemClickFunction} />
+                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT1Player} />
                 </div>
 
                 <div id="t1Teams" className="tab-pane">
-                  <Filter items={items} itemTitleName="title" placeholder="Add Team" itemLoadFunction={this.itemLoadFunction} itemClickFunction={this.itemClickFunction} />
+                  <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT1Team} />
                 </div>
+
               </div>
             </div>
           </section>
@@ -67,15 +85,20 @@ var NewMatchInner = React.createClass({
               <div className="tab-content">
 
                 <div id="t2Players" className="tab-pane active">
-                  <Filter items={items} itemTitleName="title" placeholder="Add Players"  itemLoadFunction={this.itemLoadFunction} itemClickFunction={this.itemClickFunction} />
+                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT2Player} />
                 </div>
 
                 <div id="t2Teams" className="tab-pane">
-                  <Filter items={items} itemTitleName="title" placeholder="Add Team" itemLoadFunction={this.itemLoadFunction} itemClickFunction={this.itemClickFunction} />
+                  <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT2Team} />
                 </div>
+
               </div>
             </div>
           </section>
+        </div>
+
+        <div className="col-md-8">
+          <NewMatchDetail t1Players={this.state.t1Players} t1Team={this.state.t1Team} t2Players={this.state.t2Players} t2Team={this.state.t2Team} />
         </div>
       </div>
     );

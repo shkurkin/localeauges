@@ -1,6 +1,9 @@
-var stores =  {};
+var stores =  {
+  NewMatchStore: new NewMatchStore()
+};
 
 var actions = {};
+$.extend(actions, NewMatchActions);
 
 var flux = new Fluxxor.Flux(stores, actions);
 
