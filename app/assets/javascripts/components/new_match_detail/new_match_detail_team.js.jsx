@@ -5,7 +5,7 @@ var NewMatchDetailTeam = React.createClass({
 
   render: function() {
     var team = this.props.team.map(function(t) {
-      return (<li>{t.name}</li>);
+      return (<li key={t.id} data-id={t.id}>{t.name}</li>);
     }.bind(this));
 
     return (

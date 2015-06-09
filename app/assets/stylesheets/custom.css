@@ -22,3 +22,15 @@ ul.select-list li:hover {
 .search-input {
   margin-bottom: 8px;
 }
+
+.remove-selected-item {
+  line-height: 19px;
+  float: right;
+  cursor: pointer;
+}
+
+li.selected-item {
+  background: #dff0d8;
+  border-bottom: 1px solid #e2e2e4 !important;
+  cursor: inherit !important;
+}

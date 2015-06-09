@@ -1,6 +1,8 @@
 var NewMatchConstants = {
   INCLUDE_PLAYER: "INCLUDE_PLAYER",
-  INCLUDE_TEAM: "INCLUDE_TEAM"
+  INCLUDE_TEAM: "INCLUDE_TEAM",
+  REMOVE_PLAYER: "REMOVE_PLAYER",
+  REMOVE_TEAM: "REMOVE_TEAM"
 }
 
 var NewMatchStore = Fluxxor.createStore({
@@ -15,21 +17,42 @@ var NewMatchStore = Fluxxor.createStore({
 
     this.bindActions(
       NewMatchConstants.INCLUDE_PLAYER, this.onIncludePlayer,
-      NewMatchConstants.INCLUDE_TEAM, this.onIncludeTeam
+      NewMatchConstants.INCLUDE_TEAM, this.onIncludeTeam,
+      NewMatchConstants.REMOVE_PLAYER, this.onRemovePlayer,
+      NewMatchConstants.REMOVE_TEAM, this.onRemoveTeam
     );
   },
 
   onIncludePlayer: function(payload) {
-    var t = payload.t
-    var player = payload.player
-    this.newMatch[t+'Players'].push({email: player});
+    var t = payload.t;
+    var id = payload.id;
+    var player = payload.player;
+    this.newMatch[t+'Players'].push({id: id, email: player});
     this.emit("change");
   },
 
   onIncludeTeam: function(payload) {
-    var t = payload.t
-    var team = payload.team
-    this.newMatch[t+'Team'].push({name: team});
+    var t = payload.t;
+    var id = payload.id;
+    var team = payload.team;
+    this.newMatch[t+'Team'].push({id: id, name: team});
+    this.emit("change");
+  },
+
+  onRemovePlayer: function(payload) {
+    var t = payload.t;
+    var id = payload.id;
+    var filtered = this.newMatch[t+'Players'].filter(function(player){
+      if(player.id != id)
+        return player;
+    });
+    this.newMatch[t+'Players'] = filtered;
+    this.emit("change");
+  },
+
+  onRemoveTeam: function(payload) {
+    var t = payload.t;
+    this.newMatch[t+'Team'] = [];
     this.emit("change");
   },
 
@@ -45,5 +68,13 @@ var NewMatchActions = {
 
   includeTeam: function(team) {
     this.dispatch(NewMatchConstants.INCLUDE_TEAM, team);
+  },
+
+  removePlayer: function(player) {
+    this.dispatch(NewMatchConstants.REMOVE_PLAYER, player);
+  },
+
+  removeTeam: function(team) {
+    this.dispatch(NewMatchConstants.REMOVE_TEAM, team);
   }
 }
