@@ -25,4 +25,7 @@
 //= require jquery.nicescroll.js
 //= require respond.min.js
 //= require common-scripts.js
+//= require bootstrap-datepicker
+//= require bootstrap-timepicker
+//= require advanced-form-components
 //= require_tree .

@@ -1,17 +1,24 @@
 var NewMatchDetailTeam = React.createClass({
   propTypes: {
-    team: React.PropTypes.array
+    teamData: React.PropTypes.array
   },
 
   render: function() {
-    var team = this.props.team.map(function(t) {
-      return (<li key={t.id} data-id={t.id}>{t.name}</li>);
-    }.bind(this));
-
-    return (
-      <ul className="new-match-team">
-        {team}
-      </ul>
-    )
+    if(this.props.teamData.length == 0){
+      return (<div></div>);
+    } else {
+      var team = this.props.teamData[0];
+      var users = team.users.map(function(user){
+        return(<li key={user.id}>{user.email}</li>)
+      });
+      return (
+        <div>
+          <h2 key={team.id}>{team.name}</h2>
+          <ul>
+            {users}
+          </ul>
+        </div>
+      )
+    }
   }
 });

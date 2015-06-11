@@ -2,7 +2,9 @@ var NewMatchConstants = {
   INCLUDE_PLAYER: "INCLUDE_PLAYER",
   INCLUDE_TEAM: "INCLUDE_TEAM",
   REMOVE_PLAYER: "REMOVE_PLAYER",
-  REMOVE_TEAM: "REMOVE_TEAM"
+  REMOVE_TEAM: "REMOVE_TEAM",
+  CHANGE_DATE: "CHANGE_DATE",
+  CHANGE_TIME: "CHANGE_TIME"
 }
 
 var NewMatchStore = Fluxxor.createStore({
@@ -13,13 +15,27 @@ var NewMatchStore = Fluxxor.createStore({
       this.newMatch = gon.newMatch;
       this.newMatch.players = JSON.parse(this.newMatch.players);
       this.newMatch.teams = JSON.parse(this.newMatch.teams);
+
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1;
+      var yyyy = today.getFullYear();
+      if(dd<10)
+          dd='0'+dd
+      if(mm<10)
+          mm='0'+mm
+      today = mm+'-'+dd+'-'+yyyy;
+      this.newMatch.date = today;
+      this.newMatch.time = '06:30 PM';
     }
 
     this.bindActions(
       NewMatchConstants.INCLUDE_PLAYER, this.onIncludePlayer,
       NewMatchConstants.INCLUDE_TEAM, this.onIncludeTeam,
       NewMatchConstants.REMOVE_PLAYER, this.onRemovePlayer,
-      NewMatchConstants.REMOVE_TEAM, this.onRemoveTeam
+      NewMatchConstants.REMOVE_TEAM, this.onRemoveTeam,
+      NewMatchConstants.CHANGE_DATE, this.onChangeDate,
+      NewMatchConstants.CHANGE_TIME, this.onChangeTime
     );
   },
 
@@ -33,9 +49,7 @@ var NewMatchStore = Fluxxor.createStore({
 
   onIncludeTeam: function(payload) {
     var t = payload.t;
-    var id = payload.id;
-    var team = payload.team;
-    this.newMatch[t+'Team'].push({id: id, name: team});
+    this.newMatch[t+'Team'] = [payload];
     this.emit("change");
   },
 
@@ -53,6 +67,16 @@ var NewMatchStore = Fluxxor.createStore({
   onRemoveTeam: function(payload) {
     var t = payload.t;
     this.newMatch[t+'Team'] = [];
+    this.emit("change");
+  },
+
+  onChangeDate: function(date) {
+    this.newMatch.date = date;
+    this.emit("change");
+  },
+
+  onChangeTime: function(time) {
+    this.newMatch.time = time;
     this.emit("change");
   },
 
@@ -76,5 +100,13 @@ var NewMatchActions = {
 
   removeTeam: function(team) {
     this.dispatch(NewMatchConstants.REMOVE_TEAM, team);
+  },
+
+  changeDate: function(date) {
+    this.dispatch(NewMatchConstants.CHANGE_DATE, date);
+  },
+
+  changeTime: function(time) {
+    this.dispatch(NewMatchConstants.CHANGE_TIME, time);
   }
 }
