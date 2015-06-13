@@ -93,6 +93,15 @@ var NewMatchInner = React.createClass({
     this.getFlux().actions.changeTime(newTime);
   },
 
+  changeLocation: function(nickname, address) {
+    var newLocation = {nickname: nickname, address: address};
+    this.getFlux().actions.changeLocation(newLocation);
+  },
+
+  createMatch: function() {
+    // TODO
+  },
+
   render: function(){
     var t1Tabs = [
       {'title': 'Players', 'id': 't1Players'},
@@ -195,8 +204,19 @@ var NewMatchInner = React.createClass({
 
         </div>
 
-        <div className="col-md-8">
-          <NewMatchDetail t1Players={this.state.t1Players} t1Team={this.state.t1Team} t2Players={this.state.t2Players} t2Team={this.state.t2Team} date={this.state.date} time={this.state.time} />
+        <div className="col-md-8" style={{height: '927px', position: 'relative'}}>
+          <NewMatchDetail t1Players={this.state.t1Players} t1Team={this.state.t1Team} t2Players={this.state.t2Players} t2Team={this.state.t2Team} date={this.state.date} time={this.state.time} location={this.state.location} />
+          <div className="set-up-match">
+            <button onClick={this.createMatch} className="btn btn-success" style={{width: '50%', fontSize: '24px', margin: '25px 0'}}>Set It Up!</button>
+          </div>
+          <section className="panel" style={{position: 'absolute', bottom: '0', width: 'calc(100% - 30px)'}}>
+            <header className="panel-heading tab-bg-dark-navy-blue tab-right ">
+              <span className="hidden-sm wht-color">Location</span>
+            </header>
+            <div className="panel-body">
+              <GoogleMap locations={this.state.locations} changeLocationFunction={this.changeLocation} />
+            </div>
+          </section>
         </div>
       </div>
     );

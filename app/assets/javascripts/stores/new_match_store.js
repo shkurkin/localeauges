@@ -4,7 +4,8 @@ var NewMatchConstants = {
   REMOVE_PLAYER: "REMOVE_PLAYER",
   REMOVE_TEAM: "REMOVE_TEAM",
   CHANGE_DATE: "CHANGE_DATE",
-  CHANGE_TIME: "CHANGE_TIME"
+  CHANGE_TIME: "CHANGE_TIME",
+  CHANGE_LOCATION: "CHANGE_LOCATION"
 }
 
 var NewMatchStore = Fluxxor.createStore({
@@ -13,8 +14,6 @@ var NewMatchStore = Fluxxor.createStore({
       this.newMatch = {};
     } else {
       this.newMatch = gon.newMatch;
-      this.newMatch.players = JSON.parse(this.newMatch.players);
-      this.newMatch.teams = JSON.parse(this.newMatch.teams);
 
       var today = new Date();
       var dd = today.getDate();
@@ -35,7 +34,8 @@ var NewMatchStore = Fluxxor.createStore({
       NewMatchConstants.REMOVE_PLAYER, this.onRemovePlayer,
       NewMatchConstants.REMOVE_TEAM, this.onRemoveTeam,
       NewMatchConstants.CHANGE_DATE, this.onChangeDate,
-      NewMatchConstants.CHANGE_TIME, this.onChangeTime
+      NewMatchConstants.CHANGE_TIME, this.onChangeTime,
+      NewMatchConstants.CHANGE_LOCATION, this.onChangeLocation
     );
   },
 
@@ -44,12 +44,14 @@ var NewMatchStore = Fluxxor.createStore({
     var id = payload.id;
     var player = payload.player;
     this.newMatch[t+'Players'].push({id: id, email: player});
+    this.newMatch[t+'Team'] = [];
     this.emit("change");
   },
 
   onIncludeTeam: function(payload) {
     var t = payload.t;
     this.newMatch[t+'Team'] = [payload];
+    this.newMatch[t+'Players'] = [];
     this.emit("change");
   },
 
@@ -77,6 +79,11 @@ var NewMatchStore = Fluxxor.createStore({
 
   onChangeTime: function(time) {
     this.newMatch.time = time;
+    this.emit("change");
+  },
+
+  onChangeLocation: function(location) {
+    this.newMatch.location = location;
     this.emit("change");
   },
 
@@ -108,5 +115,9 @@ var NewMatchActions = {
 
   changeTime: function(time) {
     this.dispatch(NewMatchConstants.CHANGE_TIME, time);
+  },
+
+  changeLocation: function(location) {
+    this.dispatch(NewMatchConstants.CHANGE_LOCATION, location);
   }
 }

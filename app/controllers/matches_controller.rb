@@ -3,11 +3,15 @@ class MatchesController < ApplicationController
 
   def new
     @match = Match.new
-    players = User.all.select('id', 'email').to_json
-    teams = Team.all.where('NOT player_team').select('id', 'name').to_json
+    @map = true
+    players = User.all.select('id', 'email')
+    teams = Team.all.where('NOT player_team').select('id', 'name')
+    locations = Location.all.select('id', 'nickname', 'address', 'lat', 'lng')
     gon.newMatch = {
       players: players,
       teams: teams,
+      locations: locations,
+      location: {nickname: 'Location', address: 'Address'},
       t1Players: [],
       t1Team: [],
       t2Players: [],

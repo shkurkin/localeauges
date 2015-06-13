@@ -34,3 +34,24 @@ li.selected-item {
   border-bottom: 1px solid #e2e2e4 !important;
   cursor: inherit !important;
 }
+
+.detail-date {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 25px;
+}
+
+.detail-time {
+  text-align: center;
+  font-size: 24px;
+}
+
+.detail-location {
+  text-align: center;
+  font-size: 24px;
+  margin: 25px 0;
+}
+
+.set-up-match {
+  text-align: center;
+}
