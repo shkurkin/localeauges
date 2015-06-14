@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
+  get '/teams/generate_name', to: 'teams#generate_name'
+
   devise_for :users
   resources :leagues, only: [:index, :show]
   resources :matches, only: [:create, :new]
   resources :teams,   only: [:show]
+
 
   root to: "dashboard#index"
 

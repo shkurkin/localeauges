@@ -12,6 +12,13 @@ var NewMatchInner = React.createClass({
   componentDidMount: function() {
     $('.dpYears').datepicker({autoclose: true}).on('changeDate', this.changeDate);
     $('.timepicker-default').timepicker().on('changeTime', this.changeTime);
+    if(this.state.players.length == 0)
+      this.loadGonFromDom();
+  },
+
+  loadGonFromDom: function() {
+     var domGon = eval($('#gonWrap > script').html());
+     this.getFlux().actions.loadGonFromDom(domGon);
   },
 
   addT1Player: function(id, e) {

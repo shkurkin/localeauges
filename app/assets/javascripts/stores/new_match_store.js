@@ -5,27 +5,22 @@ var NewMatchConstants = {
   REMOVE_TEAM: "REMOVE_TEAM",
   CHANGE_DATE: "CHANGE_DATE",
   CHANGE_TIME: "CHANGE_TIME",
-  CHANGE_LOCATION: "CHANGE_LOCATION"
+  CHANGE_LOCATION: "CHANGE_LOCATION",
+  LOAD_GON_FROM_DOM: "LOAD_GON_FROM_DOM"
 }
 
 var NewMatchStore = Fluxxor.createStore({
   initialize: function() {
     if(typeof(gon) == 'undefined' || typeof(gon.newMatch) == 'undefined'){
       this.newMatch = {};
-    } else {
-      this.newMatch = gon.newMatch;
-
-      var today = new Date();
-      var dd = today.getDate();
-      var mm = today.getMonth()+1;
-      var yyyy = today.getFullYear();
-      if(dd<10)
-          dd='0'+dd
-      if(mm<10)
-          mm='0'+mm
-      today = mm+'-'+dd+'-'+yyyy;
-      this.newMatch.date = today;
-      this.newMatch.time = '06:30 PM';
+      this.newMatch.players = [];
+      this.newMatch.teams = [];
+      this.newMatch.locations = [];
+      this.newMatch.location = {nickname: 'Location', address: 'Address'};
+      this.newMatch.t1Players = [];
+      this.newMatch.t1Team = [];
+      this.newMatch.t2Players = [];
+      this.newMatch.t2Team = [];
     }
 
     this.bindActions(
@@ -35,8 +30,25 @@ var NewMatchStore = Fluxxor.createStore({
       NewMatchConstants.REMOVE_TEAM, this.onRemoveTeam,
       NewMatchConstants.CHANGE_DATE, this.onChangeDate,
       NewMatchConstants.CHANGE_TIME, this.onChangeTime,
-      NewMatchConstants.CHANGE_LOCATION, this.onChangeLocation
+      NewMatchConstants.CHANGE_LOCATION, this.onChangeLocation,
+      NewMatchConstants.LOAD_GON_FROM_DOM, this.onLoadGonFromDom
     );
+  },
+
+  onLoadGonFromDom: function(domGon) {
+    this.newMatch = domGon;
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth()+1;
+    var yyyy = today.getFullYear();
+    if(dd<10)
+        dd='0'+dd
+    if(mm<10)
+        mm='0'+mm
+    today = mm+'-'+dd+'-'+yyyy;
+    this.newMatch.date = today;
+    this.newMatch.time = '06:30 PM';
+    this.emit("change");
   },
 
   onIncludePlayer: function(payload) {
@@ -119,5 +131,9 @@ var NewMatchActions = {
 
   changeLocation: function(location) {
     this.dispatch(NewMatchConstants.CHANGE_LOCATION, location);
+  },
+
+  loadGonFromDom: function(gonDom) {
+    this.dispatch(NewMatchConstants.LOAD_GON_FROM_DOM, gonDom);
   }
 }

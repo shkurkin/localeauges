@@ -1,9 +1,9 @@
 <ul class="sidebar-menu" id="nav-accordion">
   <li>
-    <a href="#">
+    <%= link_to root_path do %>
       <i class="fa fa-home"></i>
       <span>Dashboard</span>
-    </a>
+    <% end %>
     <%= link_to new_match_path do %>
       <i class="fa fa-futbol-o"></i>
       <span>New Match</span>
