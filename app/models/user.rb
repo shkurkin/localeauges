@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_many :leagues, through: :teams
   has_many :matches, through: :teams
 
-  after_save :add_player_team
+  after_create :add_player_team
 
   def current_league
     return nil unless self.leagues.any?

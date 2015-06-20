@@ -18,6 +18,7 @@
 *= require style-responsive
 *= require style
 *= require font-awesome
+*= require toastr
 *= require_tree .
 *= require_self
 */

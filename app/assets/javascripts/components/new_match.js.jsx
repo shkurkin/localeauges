@@ -16,6 +16,15 @@ var NewMatchInner = React.createClass({
       this.loadGonFromDom();
   },
 
+  componentWillUpdate: function() {
+    var defaultHeight = 927;
+    var margin = 40;
+    var matchDetailHeight = this.refs.matchDetail.getDOMNode().clientHeight;
+    var locationSelectHeight = this.refs.locationSelect.getDOMNode().clientHeight;
+    if((matchDetailHeight + locationSelectHeight) > (defaultHeight - margin) )
+      this.refs.rightCol.getDOMNode().style.height = matchDetailHeight + locationSelectHeight + margin + 'px';
+  },
+
   loadGonFromDom: function() {
      var domGon = eval($('#gonWrap > script').html());
      this.getFlux().actions.loadGonFromDom(domGon);
@@ -24,8 +33,8 @@ var NewMatchInner = React.createClass({
   addT1Player: function(id, e) {
     console.log(id);
     var t = 't1';
-    var player = e.target.textContent;
-    var data = {t: t, id: id, player: player};
+    var email = e.target.textContent;
+    var data = {t: t, id: id, email: email};
     this.getFlux().actions.includePlayer(data);
   },
 
@@ -46,8 +55,8 @@ var NewMatchInner = React.createClass({
 
   addT2Player: function(id, e) {
     var t = 't2';
-    var player = e.target.textContent;
-    var data = {t: t, id: id, player: player};
+    var email = e.target.textContent;
+    var data = {t: t, id: id, email: email};
     this.getFlux().actions.includePlayer(data);
   },
 
@@ -68,7 +77,8 @@ var NewMatchInner = React.createClass({
 
   removeT1Player: function(id, e) {
     var t = 't1';
-    var data = {t: t, id: id};
+    var email = e.target.parentElement.textContent;
+    var data = {t: t, id: id, email: email};
     this.getFlux().actions.removePlayer(data);
   },
 
@@ -80,7 +90,8 @@ var NewMatchInner = React.createClass({
 
   removeT2Player: function(id, e) {
     var t = 't2';
-    var data = {t: t, id: id};
+    var email = e.target.parentElement.textContent;
+    var data = {t: t, id: id, email: email};
     this.getFlux().actions.removePlayer(data);
   },
 
@@ -100,13 +111,72 @@ var NewMatchInner = React.createClass({
     this.getFlux().actions.changeTime(newTime);
   },
 
-  changeLocation: function(nickname, address) {
-    var newLocation = {nickname: nickname, address: address};
+  changeLocation: function(nickname, address, id) {
+    var newLocation = {nickname: nickname, address: address, id: id};
     this.getFlux().actions.changeLocation(newLocation);
   },
 
-  createMatch: function() {
-    // TODO
+  setUpMatch: function() {
+    this.createNewTeams(this.createMatch);
+  },
+
+  createNewTeams: function(callback) {
+    var data = [
+      {name: this.state.t1NewName, players: this.state.t1Players, respond_as: 't1'},
+      {name: this.state.t2NewName, players: this.state.t2Players, respond_as: 't2'}
+    ];
+
+    $.ajax({
+      type: 'POST',
+      url: '/teams/make_multiple.json',
+      dataType: 'json',
+      contentType: 'application/json',
+      data:  JSON.stringify({data: data}),
+      success: function(callback, msg) {
+        var t1, t2;
+        for(var team in msg.new_teams) {
+          toastr.success('Welcome!', msg.new_teams[team].name + ' created')
+        }
+        if (typeof msg.new_teams['t1'] !== 'undefined')
+          t1 = msg.new_teams['t1'].id;
+        if (typeof msg.new_teams['t2'] !== 'undefined')
+          t2 = msg.new_teams['t2'].id;
+
+        callback(t1, t2);
+      }.bind(this, callback),
+      error: function(requestObject, error, errorThrown) {
+        toastr.error("Are you sure your team name is unique?", 'Team creation error')
+        console.log('error: ' + error + ' errorThrown: ' + errorThrown);
+      }
+    });
+
+  },
+
+  createMatch: function(team1_id, team2_id) {
+    if(typeof team1_id === 'undefined')
+      team1_id = this.state.t1Team[0].id
+    if(typeof team2_id === 'undefined')
+      team2_id = this.state.t2Team[0].id
+    var data = {
+      team1_id: team1_id,
+      team2_id: team2_id,
+      datetime: this.state.date + ' ' + this.state.time,
+      location_id: this.state.location.id
+    };
+    $.ajax({
+      type: 'POST',
+      url: '/matches',
+      data: data,
+      success: function(msg) {
+        console.log(msg);
+        // TODO insert modal and activate
+        // $('#newMatchModal').modal('toggle');
+      },
+      error: function(requestObject, error, errorThrown) {
+        toastr.error("Our bad! Please try again later.", 'Match creation error')
+        console.log('error: ' + error + ' errorThrown: ' + errorThrown);
+      }
+    });
   },
 
   render: function(){
@@ -211,12 +281,14 @@ var NewMatchInner = React.createClass({
 
         </div>
 
-        <div className="col-md-8" style={{height: '927px', position: 'relative'}}>
-          <NewMatchDetail t1Players={this.state.t1Players} t1Team={this.state.t1Team} t2Players={this.state.t2Players} t2Team={this.state.t2Team} date={this.state.date} time={this.state.time} location={this.state.location} />
-          <div className="set-up-match">
-            <button onClick={this.createMatch} className="btn btn-success" style={{width: '50%', fontSize: '24px', margin: '25px 0'}}>Set It Up!</button>
+        <div className="col-md-8" ref="rightCol" style={{height: '927px', position: 'relative'}}>
+          <div ref="matchDetail">
+            <NewMatchDetail t1Players={this.state.t1Players} t1Team={this.state.t1Team} t1NewName={this.state.t1NewName} t2Players={this.state.t2Players} t2Team={this.state.t2Team} t2NewName={this.state.t2NewName} date={this.state.date} time={this.state.time} location={this.state.location} />
+            <div className="set-up-match">
+              <button onClick={this.setUpMatch} className="btn btn-success" style={{width: '50%', fontSize: '24px', margin: '25px 0'}}>Set It Up!</button>
+            </div>
           </div>
-          <section className="panel" style={{position: 'absolute', bottom: '0', width: 'calc(100% - 30px)'}}>
+          <section className="panel" style={{position: 'absolute', bottom: '0', width: 'calc(100% - 30px)'}} ref="locationSelect">
             <header className="panel-heading tab-bg-dark-navy-blue tab-right ">
               <span className="hidden-sm wht-color">Location</span>
             </header>
@@ -226,6 +298,7 @@ var NewMatchInner = React.createClass({
           </section>
         </div>
       </div>
+
     );
   }
 });

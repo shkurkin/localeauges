@@ -28,4 +28,6 @@
 //= require bootstrap-datepicker
 //= require bootstrap-timepicker
 //= require advanced-form-components
+//= require toastr
+//= require moment
 //= require_tree .

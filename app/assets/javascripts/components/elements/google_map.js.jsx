@@ -9,9 +9,13 @@ var GoogleMap = React.createClass({
       center: new google.maps.LatLng(-34.397, 150.644),
       zoom: 10
     };
-    var map = new google.maps.Map(this.refs.gMap.getDOMNode(), mapOptions);
-    this.setLocation(map);
-    this.makeMarkers(this.props.locations, map);
+    this.map = new google.maps.Map(this.refs.gMap.getDOMNode(), mapOptions);
+    this.setLocation(this.map);
+    this.makeMarkers(this.props.locations, this.map);
+  },
+
+  componentWillUpdate: function(nextProps){
+    this.makeMarkers(nextProps.locations, this.map);
   },
 
   setLocation: function(map) {
@@ -39,11 +43,12 @@ var GoogleMap = React.createClass({
       marker.updateFunc = this.props.changeLocationFunction;
       marker.nickname = location.nickname;
       marker.address = location.address;
+      marker.id = location.id;
       google.maps.event.addListener(marker, 'click', function(){
         if(active)
           active.close();
         this.info.open(map, this);
-        this.updateFunc(this.nickname, this.address);
+        this.updateFunc(this.nickname, this.address, this.id);
         active = this.info;
       })
     };

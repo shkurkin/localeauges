@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get '/teams/generate_name', to: 'teams#generate_name'
+  get '/teams/generate_name',  to: 'teams#generate_name'
+  post '/teams/make_multiple', to: 'teams#make_multiple'
 
   devise_for :users
   resources :leagues, only: [:index, :show]

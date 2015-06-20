@@ -19,8 +19,10 @@ var NewMatchStore = Fluxxor.createStore({
       this.newMatch.location = {nickname: 'Location', address: 'Address'};
       this.newMatch.t1Players = [];
       this.newMatch.t1Team = [];
+      this.newMatch.t1NewName = 'Team 1';
       this.newMatch.t2Players = [];
       this.newMatch.t2Team = [];
+      this.newMatch.t2NewName = 'Team 2';
     }
 
     this.bindActions(
@@ -54,27 +56,62 @@ var NewMatchStore = Fluxxor.createStore({
   onIncludePlayer: function(payload) {
     var t = payload.t;
     var id = payload.id;
-    var player = payload.player;
-    this.newMatch[t+'Players'].push({id: id, email: player});
+    var email = payload.email;
+    this.newMatch[t+'Players'].push({id: id, email: email});
+    if(this.newMatch[t+'Players'].length == 2)
+      this._getTeamName(t);
     this.newMatch[t+'Team'] = [];
+    var filteredPlayers = this.newMatch.players.filter(function(player){
+      if(player.id != id)
+        return player;
+    });
+    this.newMatch.players = filteredPlayers;
     this.emit("change");
+  },
+
+  _getTeamName: function(t) {
+    $.ajax({
+      url: '/teams/generate_name.json',
+      type: 'GET',
+      dataType: 'json',
+      success: function(t, data) {
+        this.newMatch[t+'NewName'] = data.name;
+        toastr.info('We made you a team name!<br>Click it to customize.', data.name + '!')
+        this.emit("change");
+      }.bind(this, t),
+      error: function(requestObject, error, errorThrown) {
+        console.log('error: ' + error + ' errorThrown: ' + errorThrown);
+      }
+    })
   },
 
   onIncludeTeam: function(payload) {
     var t = payload.t;
+    var id = payload.id;
     this.newMatch[t+'Team'] = [payload];
+    if(t == 't1')
+      this.newMatch[t+'NewName'] = 'Team 1';
+    else
+      this.newMatch[t+'NewName'] = 'Team 2';
     this.newMatch[t+'Players'] = [];
+    var filteredTeams = this.newMatch.teams.filter(function(team){
+      if(team.id != id)
+        return team;
+    });
+    this.newMatch.teams = filteredTeams;
     this.emit("change");
   },
 
   onRemovePlayer: function(payload) {
     var t = payload.t;
     var id = payload.id;
-    var filtered = this.newMatch[t+'Players'].filter(function(player){
+    var email = payload.email;
+    var filteredTeamPlayers = this.newMatch[t+'Players'].filter(function(player){
       if(player.id != id)
         return player;
     });
-    this.newMatch[t+'Players'] = filtered;
+    this.newMatch.players.unshift({id: id, email: email});
+    this.newMatch[t+'Players'] = filteredTeamPlayers;
     this.emit("change");
   },
 

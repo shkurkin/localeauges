@@ -1,7 +1,7 @@
 var NewMatchDetailPlayers = React.createClass({
   propTypes: {
     players: React.PropTypes.array,
-    defaultTeam: React.PropTypes.string
+    teamName: React.PropTypes.string
   },
 
   render: function() {
@@ -11,7 +11,7 @@ var NewMatchDetailPlayers = React.createClass({
 
     return (
       <div>
-        <h2>{this.props.defaultTeam}</h2>
+        <h2>{this.props.teamName}</h2>
         <ul className="new-match-players">
           {players}
         </ul>

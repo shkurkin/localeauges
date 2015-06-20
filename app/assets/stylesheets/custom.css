@@ -55,3 +55,13 @@ li.selected-item {
 .set-up-match {
   text-align: center;
 }
+
+h2 {
+  word-break: break-word;
+}
+
+li.selected-item span {
+  max-width: 250px;
+  display: inline-block;
+  word-break: break-all;
+}
