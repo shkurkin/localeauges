@@ -17,12 +17,12 @@ var NewMatchStore = Fluxxor.createStore({
       this.newMatch.teams = [];
       this.newMatch.locations = [];
       this.newMatch.location = {nickname: 'Location', address: 'Address'};
-      this.newMatch.t1Players = [];
-      this.newMatch.t1Team = [];
       this.newMatch.t1NewName = 'Team 1';
-      this.newMatch.t2Players = [];
-      this.newMatch.t2Team = [];
+      this.newMatch.t1NewPlayers = [];
+      this.newMatch.t1Team = [];
       this.newMatch.t2NewName = 'Team 2';
+      this.newMatch.t2NewPlayers = [];
+      this.newMatch.t2Team = [];
     }
 
     this.bindActions(
@@ -57,9 +57,11 @@ var NewMatchStore = Fluxxor.createStore({
     var t = payload.t;
     var id = payload.id;
     var email = payload.email;
-    this.newMatch[t+'Players'].push({id: id, email: email});
-    if(this.newMatch[t+'Players'].length == 2)
+    this.newMatch[t+'NewPlayers'].push({id: id, email: email});
+    if(this.newMatch[t+'NewPlayers'].length == 2)
       this._getTeamName(t);
+    // repopulate teams before clear
+    this.newMatch.teams.unshift.apply(this.newMatch.teams, this.newMatch[t+'Team'])
     this.newMatch[t+'Team'] = [];
     var filteredPlayers = this.newMatch.players.filter(function(player){
       if(player.id != id)
@@ -88,12 +90,16 @@ var NewMatchStore = Fluxxor.createStore({
   onIncludeTeam: function(payload) {
     var t = payload.t;
     var id = payload.id;
+    if(this.newMatch[t+'Team'].length != 0)
+      this.newMatch.teams = this.newMatch[t+'Team'].concat(this.newMatch.teams);
     this.newMatch[t+'Team'] = [payload];
     if(t == 't1')
       this.newMatch[t+'NewName'] = 'Team 1';
     else
       this.newMatch[t+'NewName'] = 'Team 2';
-    this.newMatch[t+'Players'] = [];
+    // repopulate players before clear
+    this.newMatch.players.unshift.apply(this.newMatch.players, this.newMatch[t+'NewPlayers'])
+    this.newMatch[t+'NewPlayers'] = [];
     var filteredTeams = this.newMatch.teams.filter(function(team){
       if(team.id != id)
         return team;
@@ -106,17 +112,20 @@ var NewMatchStore = Fluxxor.createStore({
     var t = payload.t;
     var id = payload.id;
     var email = payload.email;
-    var filteredTeamPlayers = this.newMatch[t+'Players'].filter(function(player){
+    var filteredNewTeamPlayers = this.newMatch[t+'NewPlayers'].filter(function(player){
       if(player.id != id)
         return player;
     });
     this.newMatch.players.unshift({id: id, email: email});
-    this.newMatch[t+'Players'] = filteredTeamPlayers;
+    this.newMatch[t+'NewPlayers'] = filteredNewTeamPlayers;
     this.emit("change");
   },
 
   onRemoveTeam: function(payload) {
     var t = payload.t;
+    var id = payload.id;
+    var name = payload.name;
+    this.newMatch.teams.unshift({id: id, name: name});
     this.newMatch[t+'Team'] = [];
     this.emit("change");
   },

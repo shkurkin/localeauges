@@ -82,9 +82,10 @@ var NewMatchInner = React.createClass({
     this.getFlux().actions.removePlayer(data);
   },
 
-  removeT1Team: function(e) {
+  removeT1Team: function(id, e) {
     var t = 't1';
-    var data = {t: t};
+    var name = e.target.parentElement.textContent;
+    var data = {t: t, id: id, name: name};
     this.getFlux().actions.removeTeam(data);
   },
 
@@ -95,9 +96,10 @@ var NewMatchInner = React.createClass({
     this.getFlux().actions.removePlayer(data);
   },
 
-  removeT2Team: function(e) {
+  removeT2Team: function(id, e) {
     var t = 't2';
-    var data = {t: t};
+    var name = e.target.parentElement.textContent;
+    var data = {t: t, id: id, name: name};
     this.getFlux().actions.removeTeam(data);
   },
 
@@ -117,30 +119,35 @@ var NewMatchInner = React.createClass({
   },
 
   setUpMatch: function() {
-    this.createNewTeams(this.createMatch);
+    // throw error if location has not been selected
+    if(this.state.location.address == 'Address')
+      toastr.error("Please select a location!", 'Match creation error')
+    else
+      this.defineTeams(this.createMatch);
   },
 
-  createNewTeams: function(callback) {
+  defineTeams: function(callback) {
     var data = [
-      {name: this.state.t1NewName, players: this.state.t1Players, respond_as: 't1'},
-      {name: this.state.t2NewName, players: this.state.t2Players, respond_as: 't2'}
+      {name: this.state.t1NewName, players: this.state.t1NewPlayers, respond_as: 't1'},
+      {name: this.state.t2NewName, players: this.state.t2NewPlayers, respond_as: 't2'}
     ];
 
     $.ajax({
       type: 'POST',
-      url: '/teams/make_multiple.json',
+      url: '/teams/define_teams_for_match.json',
       dataType: 'json',
       contentType: 'application/json',
       data:  JSON.stringify({data: data}),
       success: function(callback, msg) {
         var t1, t2;
-        for(var team in msg.new_teams) {
-          toastr.success('Welcome!', msg.new_teams[team].name + ' created')
+        for(var team in msg.teams) {
+          if(!msg.teams[team].userTeam)
+            toastr.success('Welcome!', msg.teams[team].name + ' created')
         }
-        if (typeof msg.new_teams['t1'] !== 'undefined')
-          t1 = msg.new_teams['t1'].id;
-        if (typeof msg.new_teams['t2'] !== 'undefined')
-          t2 = msg.new_teams['t2'].id;
+        if (typeof msg.teams['t1'] !== 'undefined')
+          t1 = msg.teams['t1'].id;
+        if (typeof msg.teams['t2'] !== 'undefined')
+          t2 = msg.teams['t2'].id;
 
         callback(t1, t2);
       }.bind(this, callback),
@@ -169,8 +176,9 @@ var NewMatchInner = React.createClass({
       data: data,
       success: function(msg) {
         console.log(msg);
-        // TODO insert modal and activate
-        // $('#newMatchModal').modal('toggle');
+        var modal = $(msg);
+        $('body').append(modal)
+        modal.modal('toggle');
       },
       error: function(requestObject, error, errorThrown) {
         toastr.error("Our bad! Please try again later.", 'Match creation error')
@@ -215,7 +223,7 @@ var NewMatchInner = React.createClass({
               <div className="tab-content">
 
                 <div id="t1Players" className="tab-pane active">
-                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT1Player} selectedItems={this.state.t1Players} selectedClickFunction={this.removeT1Player}/>
+                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT1Player} selectedItems={this.state.t1NewPlayers} selectedClickFunction={this.removeT1Player}/>
                 </div>
 
                 <div id="t1Teams" className="tab-pane">
@@ -238,7 +246,7 @@ var NewMatchInner = React.createClass({
               <div className="tab-content">
 
                 <div id="t2Players" className="tab-pane active">
-                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT2Player} selectedItems={this.state.t2Players} selectedClickFunction={this.removeT2Player} />
+                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT2Player} selectedItems={this.state.t2NewPlayers} selectedClickFunction={this.removeT2Player} />
                 </div>
 
                 <div id="t2Teams" className="tab-pane">
@@ -283,7 +291,7 @@ var NewMatchInner = React.createClass({
 
         <div className="col-md-8" ref="rightCol" style={{height: '927px', position: 'relative'}}>
           <div ref="matchDetail">
-            <NewMatchDetail t1Players={this.state.t1Players} t1Team={this.state.t1Team} t1NewName={this.state.t1NewName} t2Players={this.state.t2Players} t2Team={this.state.t2Team} t2NewName={this.state.t2NewName} date={this.state.date} time={this.state.time} location={this.state.location} />
+            <NewMatchDetail t1NewPlayers={this.state.t1NewPlayers} t1Team={this.state.t1Team} t1NewName={this.state.t1NewName} t2NewPlayers={this.state.t2NewPlayers} t2Team={this.state.t2Team} t2NewName={this.state.t2NewName} date={this.state.date} time={this.state.time} location={this.state.location} />
             <div className="set-up-match">
               <button onClick={this.setUpMatch} className="btn btn-success" style={{width: '50%', fontSize: '24px', margin: '25px 0'}}>Set It Up!</button>
             </div>

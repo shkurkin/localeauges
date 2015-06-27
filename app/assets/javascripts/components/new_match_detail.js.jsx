@@ -1,7 +1,7 @@
 var NewMatchDetail = React.createClass({
   propTypes: {
-    t1Players: React.PropTypes.array,
-    t2Players: React.PropTypes.array,
+    t1NewPlayers: React.PropTypes.array,
+    t2NewPlayers: React.PropTypes.array,
     t1Team: React.PropTypes.array,
     t2Team: React.PropTypes.array,
     date: React.PropTypes.string,
@@ -15,15 +15,15 @@ var NewMatchDetail = React.createClass({
     var team1, team2;
     if(this.props.t1Team.length)
       team1 = <NewMatchDetailTeam teamData={this.props.t1Team} />;
-    else if (this.props.t1Players.length)
-      team1 = <NewMatchDetailPlayers players={this.props.t1Players} teamName={this.props.t1NewName} />;
+    else if (this.props.t1NewPlayers.length)
+      team1 = <NewMatchDetailPlayers players={this.props.t1NewPlayers} teamName={this.props.t1NewName} />;
     else
       team1 = <div><h2>Team 1</h2></div>;
 
     if(this.props.t2Team.length)
       team2 = <NewMatchDetailTeam teamData={this.props.t2Team} />;
-    else if (this.props.t2Players.length)
-      team2 = <NewMatchDetailPlayers players={this.props.t2Players} teamName={this.props.t2NewName} />;
+    else if (this.props.t2NewPlayers.length)
+      team2 = <NewMatchDetailPlayers players={this.props.t2NewPlayers} teamName={this.props.t2NewName} />;
     else
       team2 = <div><h2>Team 2</h2></div>;
     var date = moment(new Date(this.props.date)).format('dddd, MMMM Do');
@@ -35,13 +35,13 @@ var NewMatchDetail = React.createClass({
             <div className="col-md-12">
               <h1 style={{marginTop: "0", textAlign: "center"}}>Match Details</h1>
             </div>
-            <div className="col-md-5" style={{textAlign: 'right'}}>
+            <div className="col-md-5 col-sm-5 col-xs-5" style={{textAlign: 'right'}}>
               {team1}
             </div>
-            <div className="col-md-2" style={{textAlign: 'center'}}>
+            <div className="col-md-2 col-sm-2 col-xs-2" style={{textAlign: 'center'}}>
              <h2>VS</h2>
             </div>
-            <div className="col-md-5">
+            <div className="col-md-5 col-sm-5 col-xs-5">
               {team2}
             </div>
           </div>

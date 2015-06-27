@@ -12,12 +12,12 @@ class MatchesController < ApplicationController
       teams: teams,
       locations: locations,
       location: {nickname: 'Location', address: 'Address'},
-      t1Players: [],
-      t1Team: [],
       t1NewName: 'Team 1',
-      t2Players: [],
-      t2Team: [],
-      t2NewName: 'Team 2'
+      t1NewPlayers: [],
+      t1Team: [],
+      t2NewName: 'Team 2',
+      t2NewPlayers: [],
+      t2Team: []
     }
   end
 
@@ -26,10 +26,12 @@ class MatchesController < ApplicationController
     # DateTime.strptime("06-18-2015 06:30 PM", "%m-%d-%Y %I:%M %p")
     datetime = DateTime.strptime(params[:datetime], "%m-%d-%Y %I:%M %p")
     @match.datetime = datetime
-    team1 = Team.find(params[:team1_id])
-    team2 = Team.find(params[:team2_id])
-    @match.teams << [team1, team2]
+    @team1 = Team.find(params[:team1_id])
+    @team2 = Team.find(params[:team2_id])
+    @location = Location.find(params[:location_id])
+    @match.teams << [@team1, @team2]
     if @match.save
+      MatchMailer.new_match(@match).deliver
       render "matches/modal", layout: false
     else
       render json: new_team.errors, status: :unprocessable_entity

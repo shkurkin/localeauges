@@ -61,7 +61,25 @@ h2 {
 }
 
 li.selected-item span {
-  max-width: 250px;
+  max-width: 90%;
   display: inline-block;
   word-break: break-all;
+}
+
+ul li {
+  word-wrap: break-word;
+}
+
+.modal-location-img {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 20px;
+  word-wrap: break-word;
+}
+
+.modal-vs {
+  margin-bottom: 10px;
 }
