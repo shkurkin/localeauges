@@ -2,7 +2,7 @@ var FluxMixin = Fluxxor.FluxMixin(React);
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var NewMatchInner = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("NewMatchStore")],
+  mixins: [FluxMixin, StoreWatchMixin("NewMatchStore", "DashboardMatchStore")],
 
   getStateFromFlux: function() {
     var flux = this.getFlux();
@@ -12,7 +12,7 @@ var NewMatchInner = React.createClass({
   componentDidMount: function() {
     $('.dpYears').datepicker({autoclose: true}).on('changeDate', this.changeDate);
     $('.timepicker-default').timepicker().on('changeTime', this.changeTime);
-    if(this.state.players.length == 0)
+    if(!this.state.loadedFromGon)
       this.loadGonFromDom();
   },
 
@@ -27,7 +27,7 @@ var NewMatchInner = React.createClass({
 
   loadGonFromDom: function() {
      var domGon = eval($('#gonWrap > script').html());
-     this.getFlux().actions.loadGonFromDom(domGon);
+     this.getFlux().actions.newMatchLoadGonFromDom(domGon);
   },
 
   addT1Player: function(id, e) {
@@ -187,6 +187,28 @@ var NewMatchInner = React.createClass({
     });
   },
 
+  panelHeaders: {
+    t1: (
+      <PanelHeader title="Team 1">
+        <ul className="nav nav-tabs pull-right">
+          <li className="active"><a data-toggle="tab" href="#t1Players">Players</a></li>
+          <li><a data-toggle="tab" href="#t1Teams">Teams</a></li>
+        </ul>
+      </PanelHeader>
+    ),
+    t2: (
+      <PanelHeader title="Team 2">
+        <ul className="nav nav-tabs pull-right">
+          <li className="active"><a data-toggle="tab" href="#t2Players">Players</a></li>
+          <li><a data-toggle="tab" href="#t2Teams">Teams</a></li>
+        </ul>
+      </PanelHeader>
+    ),
+    date: <PanelHeader title="Date" />,
+    time: <PanelHeader title="Time" />,
+    location: <PanelHeader title="Location" />
+  },
+
   render: function(){
     var t1Tabs = [
       {'title': 'Players', 'id': 't1Players'},
@@ -211,82 +233,47 @@ var NewMatchInner = React.createClass({
     return(
       <div className="row">
         <div className="col-md-4">
-          <section className="panel">
-            <header className="panel-heading tab-bg-dark-navy-blue tab-right ">
-              <ul className="nav nav-tabs pull-right">
-                <li className="active"><a data-toggle="tab" href="#t1Players">Players</a></li>
-                <li><a data-toggle="tab" href="#t1Teams">Teams</a></li>
-              </ul>
-              <span className="hidden-sm wht-color">Team 1</span>
-            </header>
-            <div className="panel-body">
-              <div className="tab-content">
-
-                <div id="t1Players" className="tab-pane active">
-                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT1Player} selectedItems={this.state.t1NewPlayers} selectedClickFunction={this.removeT1Player}/>
-                </div>
-
-                <div id="t1Teams" className="tab-pane">
-                  <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT1Team} selectedItems={this.state.t1Team} selectedClickFunction={this.removeT1Team} />
-                </div>
-
+          <Panel header={this.panelHeaders.t1}>
+            <div className="tab-content">
+              <div id="t1Players" className="tab-pane active">
+                <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT1Player} selectedItems={this.state.t1NewPlayers} selectedClickFunction={this.removeT1Player}/>
+              </div>
+              <div id="t1Teams" className="tab-pane">
+                <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT1Team} selectedItems={this.state.t1Team} selectedClickFunction={this.removeT1Team} />
               </div>
             </div>
-          </section>
+          </Panel>
 
-          <section className="panel">
-            <header className="panel-heading tab-bg-dark-navy-blue tab-right ">
-              <ul className="nav nav-tabs pull-right">
-                <li className="active"><a data-toggle="tab" href="#t2Players">Players</a></li>
-                <li><a data-toggle="tab" href="#t2Teams">Teams</a></li>
-              </ul>
-              <span className="hidden-sm wht-color">Team 2</span>
-            </header>
-            <div className="panel-body">
-              <div className="tab-content">
-
-                <div id="t2Players" className="tab-pane active">
-                  <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT2Player} selectedItems={this.state.t2NewPlayers} selectedClickFunction={this.removeT2Player} />
-                </div>
-
-                <div id="t2Teams" className="tab-pane">
-                  <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT2Team} selectedItems={this.state.t2Team} selectedClickFunction={this.removeT2Team} />
-                </div>
-
+          <Panel header={this.panelHeaders.t2}>
+            <div className="tab-content">
+              <div id="t2Players" className="tab-pane active">
+                <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT2Player} selectedItems={this.state.t2NewPlayers} selectedClickFunction={this.removeT2Player}/>
+              </div>
+              <div id="t2Teams" className="tab-pane">
+                <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT2Team} selectedItems={this.state.t2Team} selectedClickFunction={this.removeT2Team} />
               </div>
             </div>
-          </section>
+          </Panel>
 
-          <section className="panel">
-            <header className="panel-heading tab-bg-dark-navy-blue tab-right ">
-              <span className="hidden-sm wht-color">Date</span>
-            </header>
-            <div className="panel-body">
-              <div id="datePicker">
-                <div data-date-viewmode="years" data-date-format="mm-dd-yyyy" data-date={this.state.date} data-date-container='#datePicker' className="input-append date dpYears">
-                  <input type="text" onChange={this.updateDate} creadOnly="" value={today} size="16" className="form-control" id="dateInput" />
-                  <span className="input-group-btn add-on">
-                    <button className="btn btn-danger" type="button"><i className="fa fa-calendar"></i></button>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="panel">
-            <header className="panel-heading tab-bg-dark-navy-blue tab-right ">
-              <span className="hidden-sm wht-color">Time</span>
-            </header>
-            <div className="panel-body">
-              <div className="input-group bootstrap-timepicker">
-                <input type="text" onChange={this.updateTime} className="form-control timepicker-default" value={this.state.time} id="timeInput" />
-                <span className="input-group-btn">
-                  <button className="btn btn-danger" type="button" style={{padding: "6px 10px", marginLeft: "-28px"}}><i className="fa fa-clock-o"></i></button>
+          <Panel header={this.panelHeaders.date}>
+            <div id="datePicker">
+              <div data-date-viewmode="years" data-date-format="mm-dd-yyyy" data-date={this.state.date} data-date-container='#datePicker' className="input-append date dpYears">
+                <input type="text" onChange={this.updateDate} creadOnly="" value={today} size="16" className="form-control" id="dateInput" />
+                <span className="input-group-btn add-on">
+                  <button className="btn btn-danger" type="button"><i className="fa fa-calendar"></i></button>
                 </span>
               </div>
             </div>
-          </section>
+          </Panel>
 
+          <Panel header={this.panelHeaders.time}>
+            <div className="input-group bootstrap-timepicker">
+              <input type="text" onChange={this.updateTime} className="form-control timepicker-default" value={this.state.time} id="timeInput" />
+              <span className="input-group-btn">
+                <button className="btn btn-danger" type="button" style={{padding: "6px 10px", marginLeft: "-28px"}}><i className="fa fa-clock-o"></i></button>
+              </span>
+            </div>
+          </Panel>
         </div>
 
         <div className="col-md-8" ref="rightCol" style={{height: '927px', position: 'relative'}}>
@@ -296,14 +283,9 @@ var NewMatchInner = React.createClass({
               <button onClick={this.setUpMatch} className="btn btn-success" style={{width: '50%', fontSize: '24px', margin: '25px 0'}}>Set It Up!</button>
             </div>
           </div>
-          <section className="panel" style={{position: 'absolute', bottom: '0', width: 'calc(100% - 30px)'}} ref="locationSelect">
-            <header className="panel-heading tab-bg-dark-navy-blue tab-right ">
-              <span className="hidden-sm wht-color">Location</span>
-            </header>
-            <div className="panel-body">
-              <GoogleMap locations={this.state.locations} changeLocationFunction={this.changeLocation} />
-            </div>
-          </section>
+          <Panel header={this.panelHeaders.location} style={{position: 'absolute', bottom: '0', width: 'calc(100% - 30px)'}} ref="locationSelect">
+            <GoogleMap locations={this.state.locations} changeLocationFunction={this.changeLocation} />
+          </Panel>
         </div>
       </div>
 

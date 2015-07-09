@@ -6,13 +6,14 @@ var NewMatchConstants = {
   CHANGE_DATE: "CHANGE_DATE",
   CHANGE_TIME: "CHANGE_TIME",
   CHANGE_LOCATION: "CHANGE_LOCATION",
-  LOAD_GON_FROM_DOM: "LOAD_GON_FROM_DOM"
+  NEW_MATCH_LOAD_GON_FROM_DOM: "NEW_MATCH_LOAD_GON_FROM_DOM"
 }
 
 var NewMatchStore = Fluxxor.createStore({
   initialize: function() {
     if(typeof(gon) == 'undefined' || typeof(gon.newMatch) == 'undefined'){
       this.newMatch = {};
+      this.newMatch.loadedFromGon = false;
       this.newMatch.players = [];
       this.newMatch.teams = [];
       this.newMatch.locations = [];
@@ -24,7 +25,6 @@ var NewMatchStore = Fluxxor.createStore({
       this.newMatch.t2NewPlayers = [];
       this.newMatch.t2Team = [];
     }
-
     this.bindActions(
       NewMatchConstants.INCLUDE_PLAYER, this.onIncludePlayer,
       NewMatchConstants.INCLUDE_TEAM, this.onIncludeTeam,
@@ -33,12 +33,13 @@ var NewMatchStore = Fluxxor.createStore({
       NewMatchConstants.CHANGE_DATE, this.onChangeDate,
       NewMatchConstants.CHANGE_TIME, this.onChangeTime,
       NewMatchConstants.CHANGE_LOCATION, this.onChangeLocation,
-      NewMatchConstants.LOAD_GON_FROM_DOM, this.onLoadGonFromDom
+      NewMatchConstants.NEW_MATCH_LOAD_GON_FROM_DOM, this.onNewMatchLoadGonFromDom
     );
   },
 
-  onLoadGonFromDom: function(domGon) {
+  onNewMatchLoadGonFromDom: function(domGon) {
     this.newMatch = domGon;
+    this.newMatch.loadedFromGon = true;
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1;
@@ -179,7 +180,7 @@ var NewMatchActions = {
     this.dispatch(NewMatchConstants.CHANGE_LOCATION, location);
   },
 
-  loadGonFromDom: function(gonDom) {
-    this.dispatch(NewMatchConstants.LOAD_GON_FROM_DOM, gonDom);
+  newMatchLoadGonFromDom: function(gonDom) {
+    this.dispatch(NewMatchConstants.NEW_MATCH_LOAD_GON_FROM_DOM, gonDom);
   }
 }
