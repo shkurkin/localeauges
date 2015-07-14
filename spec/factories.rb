@@ -31,7 +31,6 @@ FactoryGirl.define do
 
   factory :location do
     sequence(:name) { |n| "location#{n}" }
-    sequence(:nickname) { |n| "nickname#{n}" }
     sequence(:address) { |n| "83#{n} Market St, San Francisco, CA 94103" }
     lat 37.779814
     lng 122.3940954

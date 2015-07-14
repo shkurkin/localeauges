@@ -6,12 +6,12 @@ class MatchesController < ApplicationController
     @map = true
     players = User.all.select('id', 'email', 'name')
     teams = Team.all.where('NOT player_team').select('id', 'name')
-    locations = Location.all.select('id', 'nickname', 'address', 'lat', 'lng')
+    locations = Location.all.select('id', 'name', 'address', 'lat', 'lng')
     gon.newMatch = {
       players: players,
       teams: teams,
       locations: locations,
-      location: {nickname: 'Location', address: 'Address'},
+      location: {name: 'Location', address: 'Address'},
       t1NewName: 'Team 1',
       t1NewPlayers: [],
       t1Team: [],

@@ -23,7 +23,6 @@ end
 6.times do
   Location.create!(
     name: Faker::Address.street_address,
-    nickname: Faker::Address.street_name,
     address: "#{Faker::Address.street_address} #{Faker::Address.city}, #{Faker::Address.state_abbr} #{Faker::Address.zip}",
     lat: Faker::Address.latitude,
     lng: Faker::Address.longitude)

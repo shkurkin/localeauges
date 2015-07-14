@@ -51,7 +51,7 @@ var Match = React.createClass({
           <div className="col-md-12 detail-location">
               <a href={"https://www.google.com/maps/dir/Current+Location/" + this.props.location.address.split(' ').join('+') + "/"} target="_blank">
                 <div className="detail-location-title">
-                  {this.props.location.nickname}
+                  {this.props.location.name}
                 </div>
                 <div className="detail-location-address next-match">
                     {this.props.location.address}

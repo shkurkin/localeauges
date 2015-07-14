@@ -59,22 +59,22 @@ var GoogleMap = React.createClass({
       var marker = new google.maps.Marker({
         position: new google.maps.LatLng(location.lat, location.lng),
         map: map,
-        title: location.nickname
+        title: location.name
       });
       this.markers.push(marker);
       var active = null;
       marker.info = new google.maps.InfoWindow({
-          content: "<div><div class='location-info-title'>"+location.nickname+"</div><div class='location-info-address'"+location.address+"></div></div>"
+          content: "<div><div class='location-info-title'>"+location.name+"</div><div class='location-info-address'"+location.address+"></div></div>"
       });
       marker.updateFunc = this.props.changeLocationFunction;
-      marker.nickname = location.nickname;
+      marker.name = location.name;
       marker.address = location.address;
       marker.id = location.id;
       google.maps.event.addListener(marker, 'click', function(){
         if(active)
           active.close();
         this.info.open(map, this);
-        this.updateFunc(this.nickname, this.address, this.id);
+        this.updateFunc(this.name, this.address, this.id);
         active = this.info;
       })
     };

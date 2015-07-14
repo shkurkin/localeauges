@@ -113,8 +113,8 @@ var NewMatchInner = React.createClass({
     this.getFlux().actions.changeTime(newTime);
   },
 
-  changeLocation: function(nickname, address, id) {
-    var newLocation = {nickname: nickname, address: address, id: id};
+  changeLocation: function(name, address, id) {
+    var newLocation = {name: name, address: address, id: id};
     this.getFlux().actions.changeLocation(newLocation);
   },
 
