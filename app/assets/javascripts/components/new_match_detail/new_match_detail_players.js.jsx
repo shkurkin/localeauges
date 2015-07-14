@@ -6,7 +6,7 @@ var NewMatchDetailPlayers = React.createClass({
 
   render: function() {
     var players = this.props.players.map(function(user) {
-      return (<li key={user.id} data-id={user.id}>{user.email}</li>);
+      return (<li key={user.id} data-id={user.id}>{user.name}</li>);
     }.bind(this));
 
     return (

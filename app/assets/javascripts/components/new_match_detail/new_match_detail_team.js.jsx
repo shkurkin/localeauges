@@ -9,7 +9,7 @@ var NewMatchDetailTeam = React.createClass({
     } else {
       var team = this.props.teamData[0];
       var users = team.users.map(function(user){
-        return(<li key={user.id}>{user.email}</li>)
+        return(<li key={user.id}>{user.name}</li>)
       });
       return (
         <div>

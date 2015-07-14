@@ -92,13 +92,18 @@ a, a:hover, a:focus {
 .form-account .form-control:focus {
     z-index: 2;
 }
-.form-account input[type="email"], .form-account input[type="password"] {
+.form-account input[type="email"], .form-account input[type="password"], .form-account input[type="text"], .form-account select {
     margin-bottom: 15px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     border: 1px solid #eaeaea;
     box-shadow: none;
     font-size: 12px;
+}
+
+.form-control.timezone-select {
+  font-size: 12px;
+  height: 39px;
 }
 
 .form-account .btn-login {

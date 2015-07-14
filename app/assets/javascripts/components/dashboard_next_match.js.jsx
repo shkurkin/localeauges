@@ -10,19 +10,22 @@ var DashboardNextMatchInner = React.createClass({
   },
 
   componentDidMount: function() {
-    if(!this.state.loadedFromGon)
-      this.loadGonFromDom();
+    if(!this.state.fresh)
+      this.dashboardFreshen();
   },
 
-  loadGonFromDom: function() {
+  dashboardFreshen: function() {
      var domGon = eval($('#gonWrap > script').html());
-     this.getFlux().actions.dashboardLoadGonFromDom(domGon);
+     this.getFlux().actions.dashboardFreshen(domGon);
   },
 
   render: function() {
+    if(this.state.all.length == 0)
+      return <div>No Upcoming Matches</div>
+    var activeMatch = this.state.all[this.state.active];
     return (
       <div>
-        FOO
+        <Match teams={activeMatch.teams} datetime={activeMatch.datetime} location={activeMatch.location} />
       </div>
     )
   }

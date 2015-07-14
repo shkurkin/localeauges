@@ -7,10 +7,10 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Users
-User.create!(email: 'user@example.com', password: 'password', password_confirmation: 'password')
+User.create!(email: 'user@example.com', name: 'example', password: 'password', password_confirmation: 'password', timezone: Faker::Address.time_zone)
 20.times do
   password = Faker::Internet.password
-  User.create!(email: Faker::Internet.email, password: password, password_confirmation: password)
+  User.create!(email: Faker::Internet.email, name: Faker::Name.name, password: password, password_confirmation: password, timezone: Faker::Address.time_zone)
 end
 
 # Teams

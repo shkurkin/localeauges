@@ -4,7 +4,7 @@ class MatchesController < ApplicationController
   def new
     @match = Match.new
     @map = true
-    players = User.all.select('id', 'email')
+    players = User.all.select('id', 'email', 'name')
     teams = Team.all.where('NOT player_team').select('id', 'name')
     locations = Location.all.select('id', 'nickname', 'address', 'lat', 'lng')
     gon.newMatch = {

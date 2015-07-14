@@ -6,14 +6,14 @@ var NewMatchConstants = {
   CHANGE_DATE: "CHANGE_DATE",
   CHANGE_TIME: "CHANGE_TIME",
   CHANGE_LOCATION: "CHANGE_LOCATION",
-  NEW_MATCH_LOAD_GON_FROM_DOM: "NEW_MATCH_LOAD_GON_FROM_DOM"
+  NEW_MATCH_FRESHEN: "NEW_MATCH_FRESHEN"
 }
 
 var NewMatchStore = Fluxxor.createStore({
   initialize: function() {
     if(typeof(gon) == 'undefined' || typeof(gon.newMatch) == 'undefined'){
       this.newMatch = {};
-      this.newMatch.loadedFromGon = false;
+      this.newMatch.fresh = false;
       this.newMatch.players = [];
       this.newMatch.teams = [];
       this.newMatch.locations = [];
@@ -33,13 +33,13 @@ var NewMatchStore = Fluxxor.createStore({
       NewMatchConstants.CHANGE_DATE, this.onChangeDate,
       NewMatchConstants.CHANGE_TIME, this.onChangeTime,
       NewMatchConstants.CHANGE_LOCATION, this.onChangeLocation,
-      NewMatchConstants.NEW_MATCH_LOAD_GON_FROM_DOM, this.onNewMatchLoadGonFromDom
+      NewMatchConstants.NEW_MATCH_FRESHEN, this.onNewMatchFreshen
     );
   },
 
-  onNewMatchLoadGonFromDom: function(domGon) {
-    this.newMatch = domGon;
-    this.newMatch.loadedFromGon = true;
+  onNewMatchFreshen: function(data) {
+    this.newMatch = data;
+    this.newMatch.fresh = true;
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1;
@@ -57,8 +57,8 @@ var NewMatchStore = Fluxxor.createStore({
   onIncludePlayer: function(payload) {
     var t = payload.t;
     var id = payload.id;
-    var email = payload.email;
-    this.newMatch[t+'NewPlayers'].push({id: id, email: email});
+    var name = payload.name;
+    this.newMatch[t+'NewPlayers'].push({id: id, name: name});
     if(this.newMatch[t+'NewPlayers'].length == 2)
       this._getTeamName(t);
     // repopulate teams before clear
@@ -112,12 +112,12 @@ var NewMatchStore = Fluxxor.createStore({
   onRemovePlayer: function(payload) {
     var t = payload.t;
     var id = payload.id;
-    var email = payload.email;
+    var name = payload.name;
     var filteredNewTeamPlayers = this.newMatch[t+'NewPlayers'].filter(function(player){
       if(player.id != id)
         return player;
     });
-    this.newMatch.players.unshift({id: id, email: email});
+    this.newMatch.players.unshift({id: id, name: name});
     this.newMatch[t+'NewPlayers'] = filteredNewTeamPlayers;
     this.emit("change");
   },
@@ -180,7 +180,7 @@ var NewMatchActions = {
     this.dispatch(NewMatchConstants.CHANGE_LOCATION, location);
   },
 
-  newMatchLoadGonFromDom: function(gonDom) {
-    this.dispatch(NewMatchConstants.NEW_MATCH_LOAD_GON_FROM_DOM, gonDom);
+  newMatchFreshen: function(data) {
+    this.dispatch(NewMatchConstants.NEW_MATCH_FRESHEN, data);
   }
 }

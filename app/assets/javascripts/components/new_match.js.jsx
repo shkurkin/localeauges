@@ -2,7 +2,7 @@ var FluxMixin = Fluxxor.FluxMixin(React);
 var StoreWatchMixin = Fluxxor.StoreWatchMixin;
 
 var NewMatchInner = React.createClass({
-  mixins: [FluxMixin, StoreWatchMixin("NewMatchStore", "DashboardMatchStore")],
+  mixins: [FluxMixin, StoreWatchMixin("NewMatchStore")],
 
   getStateFromFlux: function() {
     var flux = this.getFlux();
@@ -12,8 +12,8 @@ var NewMatchInner = React.createClass({
   componentDidMount: function() {
     $('.dpYears').datepicker({autoclose: true}).on('changeDate', this.changeDate);
     $('.timepicker-default').timepicker().on('changeTime', this.changeTime);
-    if(!this.state.loadedFromGon)
-      this.loadGonFromDom();
+    if(!this.state.fresh)
+      this.freshen();
   },
 
   componentWillUpdate: function() {
@@ -25,16 +25,16 @@ var NewMatchInner = React.createClass({
       this.refs.rightCol.getDOMNode().style.height = matchDetailHeight + locationSelectHeight + margin + 'px';
   },
 
-  loadGonFromDom: function() {
+  freshen: function() {
      var domGon = eval($('#gonWrap > script').html());
-     this.getFlux().actions.newMatchLoadGonFromDom(domGon);
+     this.getFlux().actions.newMatchFreshen(domGon);
   },
 
   addT1Player: function(id, e) {
     console.log(id);
     var t = 't1';
-    var email = e.target.textContent;
-    var data = {t: t, id: id, email: email};
+    var name = e.target.textContent;
+    var data = {t: t, id: id, name: name};
     this.getFlux().actions.includePlayer(data);
   },
 
@@ -55,8 +55,8 @@ var NewMatchInner = React.createClass({
 
   addT2Player: function(id, e) {
     var t = 't2';
-    var email = e.target.textContent;
-    var data = {t: t, id: id, email: email};
+    var name = e.target.textContent;
+    var data = {t: t, id: id, name: name};
     this.getFlux().actions.includePlayer(data);
   },
 
@@ -77,8 +77,8 @@ var NewMatchInner = React.createClass({
 
   removeT1Player: function(id, e) {
     var t = 't1';
-    var email = e.target.parentElement.textContent;
-    var data = {t: t, id: id, email: email};
+    var name = e.target.parentElement.textContent;
+    var data = {t: t, id: id, name: name};
     this.getFlux().actions.removePlayer(data);
   },
 
@@ -91,8 +91,8 @@ var NewMatchInner = React.createClass({
 
   removeT2Player: function(id, e) {
     var t = 't2';
-    var email = e.target.parentElement.textContent;
-    var data = {t: t, id: id, email: email};
+    var name = e.target.parentElement.textContent;
+    var data = {t: t, id: id, name: name};
     this.getFlux().actions.removePlayer(data);
   },
 
@@ -175,11 +175,12 @@ var NewMatchInner = React.createClass({
       url: '/matches',
       data: data,
       success: function(msg) {
-        console.log(msg);
         var modal = $(msg);
         $('body').append(modal)
         modal.modal('toggle');
-      },
+        this.getFlux().actions.makeDashboardStale();
+        this.freshen();
+      }.bind(this),
       error: function(requestObject, error, errorThrown) {
         toastr.error("Our bad! Please try again later.", 'Match creation error')
         console.log('error: ' + error + ' errorThrown: ' + errorThrown);
@@ -236,7 +237,7 @@ var NewMatchInner = React.createClass({
           <Panel header={this.panelHeaders.t1}>
             <div className="tab-content">
               <div id="t1Players" className="tab-pane active">
-                <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT1Player} selectedItems={this.state.t1NewPlayers} selectedClickFunction={this.removeT1Player}/>
+                <Filter items={this.state.players} itemTitleName="name" placeholder="Add Players" itemClickFunction={this.addT1Player} selectedItems={this.state.t1NewPlayers} selectedClickFunction={this.removeT1Player}/>
               </div>
               <div id="t1Teams" className="tab-pane">
                 <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT1Team} selectedItems={this.state.t1Team} selectedClickFunction={this.removeT1Team} />
@@ -247,7 +248,7 @@ var NewMatchInner = React.createClass({
           <Panel header={this.panelHeaders.t2}>
             <div className="tab-content">
               <div id="t2Players" className="tab-pane active">
-                <Filter items={this.state.players} itemTitleName="email" placeholder="Add Players" itemClickFunction={this.addT2Player} selectedItems={this.state.t2NewPlayers} selectedClickFunction={this.removeT2Player}/>
+                <Filter items={this.state.players} itemTitleName="name" placeholder="Add Players" itemClickFunction={this.addT2Player} selectedItems={this.state.t2NewPlayers} selectedClickFunction={this.removeT2Player}/>
               </div>
               <div id="t2Teams" className="tab-pane">
                 <Filter items={this.state.teams} itemTitleName="name" placeholder="Add Team" itemClickFunction={this.addT2Team} selectedItems={this.state.t2Team} selectedClickFunction={this.removeT2Team} />
@@ -284,7 +285,7 @@ var NewMatchInner = React.createClass({
             </div>
           </div>
           <Panel header={this.panelHeaders.location} style={{position: 'absolute', bottom: '0', width: 'calc(100% - 30px)'}} ref="locationSelect">
-            <GoogleMap locations={this.state.locations} changeLocationFunction={this.changeLocation} />
+            <GoogleMap locations={this.state.locations} changeLocationFunction={this.changeLocation} centerOnUser={true} />
           </Panel>
         </div>
       </div>

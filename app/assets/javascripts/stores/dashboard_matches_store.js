@@ -1,20 +1,22 @@
 var DashboardMatchConstants = {
   CHANGE_ACTIVE_MATCH: "CHANGE_ACTIVE_MATCH",
-  DASHBOARD_LOAD_GON_FROM_DOM: "DASHBOARD_LOAD_GON_FROM_DOM"
+  DASHBOARD_FRESHEN: "DASHBOARD_FRESHEN",
+  MAKE_DASHBOARD_STALE: "MAKE_DASHBOARD_STALE"
 }
 
 var DashboardMatchStore = Fluxxor.createStore({
   initialize: function() {
     if(typeof(gon) == 'undefined' || typeof(gon.matches) == 'undefined'){
       this.matches = {};
-      this.matches.loadedFromGon = false;
+      this.matches.fresh = false;
       this.matches.all = [];
       this.matches.active = 0;
     }
 
     this.bindActions(
       DashboardMatchConstants.CHANGE_ACTIVE_MATCH, this.onChangeActiveMatch,
-      DashboardMatchConstants.DASHBOARD_LOAD_GON_FROM_DOM, this.onDashboardLoadGonFromDom
+      DashboardMatchConstants.DASHBOARD_FRESHEN, this.onDashboardFreshen,
+      DashboardMatchConstants.MAKE_DASHBOARD_STALE, this.onMakeDashboardState
     );
   },
 
@@ -23,10 +25,14 @@ var DashboardMatchStore = Fluxxor.createStore({
     this.emit("change");
   },
 
-  onDashboardLoadGonFromDom: function(domGon) {
-    this.matches = domGon;
-    this.matches.loadedFromGon = true;
+  onDashboardFreshen: function(data) {
+    this.matches = data;
+    this.matches.fresh = true;
     this.emit("change");
+  },
+
+  onMakeDashboardState: function() {
+    this.matches.fresh = false;
   },
 
   getState: function() {
@@ -36,10 +42,14 @@ var DashboardMatchStore = Fluxxor.createStore({
 
 var DashboardMatchActions = {
   changeActiveMatch: function(active) {
-    this.dispatch(DashboardMatchConstants.CHANGE_ACTIVE_MATCH, active)
+    this.dispatch(DashboardMatchConstants.CHANGE_ACTIVE_MATCH, active);
   },
 
-  dashboardLoadGonFromDom: function(gonDom) {
-    this.dispatch(DashboardMatchConstants.DASHBOARD_LOAD_GON_FROM_DOM, gonDom);
+  dashboardFreshen: function(data) {
+    this.dispatch(DashboardMatchConstants.DASHBOARD_FRESHEN, data);
+  },
+
+  makeDashboardStale: function() {
+    this.dispatch(DashboardMatchConstants.MAKE_DASHBOARD_STALE);
   }
 }

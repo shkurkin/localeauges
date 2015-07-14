@@ -1,24 +1,49 @@
 var GoogleMap = React.createClass({
   propTypes: {
     locations: React.PropTypes.array,
-    changeLocationFunction: React.PropTypes.func
+    center: React.PropTypes.object,
+    zoom: React.PropTypes.number,
+    changeLocationFunction: React.PropTypes.func,
+    centerOnUser: React.PropTypes.bool,
+    singleLocation: React.PropTypes.bool
+  },
+
+  markers: [],
+
+  getDefaultProps: function() {
+    return {
+      center: {lat: 34.05, lng: -118.25},
+      zoom: 10,
+      singleLocation: false
+    }
   },
 
   componentDidMount: function(){
     var mapOptions = {
-      center: new google.maps.LatLng(-34.397, 150.644),
-      zoom: 10
+      center: new google.maps.LatLng(this.props.center.lat, this.props.center.lng),
+      zoom: this.props.zoom
     };
     this.map = new google.maps.Map(this.refs.gMap.getDOMNode(), mapOptions);
-    this.setLocation(this.map);
+    if(this.props.centerOnUser)
+      this.setUserLocation(this.map);
     this.makeMarkers(this.props.locations, this.map);
   },
 
   componentWillUpdate: function(nextProps){
+    if(this.props.singleLocation) {
+      this.map.panTo(new google.maps.LatLng(nextProps.center.lat, nextProps.center.lng));
+      this.clearMarkers();
+    }
     this.makeMarkers(nextProps.locations, this.map);
   },
 
-  setLocation: function(map) {
+  clearMarkers: function(){
+    for (var i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(null);
+    }
+  },
+
+  setUserLocation: function(map) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
         var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -36,6 +61,7 @@ var GoogleMap = React.createClass({
         map: map,
         title: location.nickname
       });
+      this.markers.push(marker);
       var active = null;
       marker.info = new google.maps.InfoWindow({
           content: "<div><div class='location-info-title'>"+location.nickname+"</div><div class='location-info-address'"+location.address+"></div></div>"

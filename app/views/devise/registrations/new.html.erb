@@ -13,11 +13,15 @@
       <h2 class="form-signin-heading">create account</h2>
       <div class="login-wrap">
         <%= devise_error_messages! %>
-        <%= f.email_field :email, autofocus: true , class: "form-control", placeholder: "email" %>
+        <%= f.text_field :name, autofocus: true, class: "form-control", placeholder: "username" %>
+
+        <%= f.email_field :email, class: "form-control", placeholder: "email" %>
 
         <%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: "password", pattern: ".{8,}", required: true, title: "8 characters minimum" %>
 
         <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control", placeholder: "confirm password" %>
+
+        <%= f.time_zone_select :timezone, ActiveSupport::TimeZone.us_zones, {default: "Pacific Time (US & Canada)"}, {class: "form-control timezone-select"} %>
 
         <%= f.submit "Sign up", class: "btn btn-lg btn-login btn-block" %>
 
