@@ -20,6 +20,9 @@ end
 end
 
 # Locations
+Location.create!(name: "Cheviot Hills", address: "2551 Motor Ave., Los Angeles, CA 90064", lat: 34.0418522, lng: -118.409081)
+Location.create!(name: "Penmar Recreation Center", address: "1341 Lake St Venice, CA", lat: 33.9960081, lng: -118.4550876)
+Location.create!(name: "UCLA Tennis Courts", address: "555 Westwood Plaza Los Angeles, CA", lat: 34.0694982, lng: -118.4479914)
 6.times do
   Location.create!(
     name: Faker::Address.street_address,

@@ -79,27 +79,26 @@
                             </td>
                         </tr>
 
-                        <% if @non_player_team %>
                         <tr><td height="20"></td></tr>
                         <tr>
                             <td  class="main-subheader" style="color: #a4a4a4; font-size: 12px; font-weight: normal; line-height:20px; font-family: Helvetica, Arial, sans-serif;">
                               <table style="text-align: center; width: 100%;">
                                 <tr>
                                 <% @match.teams.order(:name).each do |team| %>
-                                  <% unless team.player_team %>
                                   <td style="padding: 10px; width: 50%; vertial-align: top;">
                                     <span style="font-weight: bold; font-size: 16px; text-decoration: underline;"><%= team.name %></span><br />
                                     <% team.users.each do |user| %>
-                                      <span><%= user.name %> - <a href="mailto:<%= user.email %>" style="text-decoration: none;"><%= user.email %></a></span><br />
+                                      <span>
+                                        <% if !team.player_team %><%= user.name %> -<br><% end %>
+                                        <a href="mailto:<%= user.email %>" style="text-decoration: none;"><%= user.email %></a>
+                                      </span><br>
                                     <% end %>
                                   </td>
                                   <% end %>
-                                <% end %>
                                 </tr>
                               </table>
                             </td>
                         </tr>
-                        <% end %>
 
                         <tr><td height="20"></td></tr>
                         <tr>

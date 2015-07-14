@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   has_many :leagues, through: :teams
   has_many :matches, through: :teams
 
+  validates_uniqueness_of :name
+
   after_create :add_player_team
 
   def current_league
@@ -24,7 +26,7 @@ class User < ActiveRecord::Base
   private
 
   def add_player_team
-    team = Team.create(name: self.email, player_team: true)
+    team = Team.create(name: self.name, player_team: true)
     self.teams << team
   end
 end

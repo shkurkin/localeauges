@@ -38,7 +38,7 @@ class TeamsController < ApplicationController
     teams.each do |team|
       if team['players'] && team['players'].length == 1
         player = team['players'].first
-        user_team = Team.where(name: player['email'], player_team: true).first
+        user_team = Team.where(name: player['name'], player_team: true).first
         user_teams[team['respond_as']] = {id: user_team.id, name: user_team.name, userTeam: true}
       end
     end

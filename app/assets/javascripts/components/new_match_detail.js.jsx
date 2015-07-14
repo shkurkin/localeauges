@@ -51,7 +51,7 @@ var NewMatchDetail = React.createClass({
             </div>
             <div className="col-md-12 detail-location">
                 <div className="detail-location-title">
-                  {this.props.location.nickname}
+                  {this.props.location.name}
                 </div>
                 <div className="detail-location-address">
                   {this.props.location.address}
