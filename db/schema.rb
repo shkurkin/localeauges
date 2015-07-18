@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150523223715) do
+ActiveRecord::Schema.define(version: 20150603061048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20150523223715) do
 
   create_table "locations", force: :cascade do |t|
     t.string   "name"
-    t.string   "nickname"
     t.string   "address"
     t.float    "lat"
     t.float    "lng"
@@ -81,12 +80,14 @@ ActiveRecord::Schema.define(version: 20150523223715) do
     t.integer  "league_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.boolean  "league_default"
   end
 
   create_table "teams", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.boolean  "player_team", default: false, null: false
   end
 
   create_table "teams_users", force: :cascade do |t|
@@ -109,6 +110,7 @@ ActiveRecord::Schema.define(version: 20150523223715) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.integer  "current_league_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

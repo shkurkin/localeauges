@@ -92,13 +92,18 @@ a, a:hover, a:focus {
 .form-account .form-control:focus {
     z-index: 2;
 }
-.form-account input[type="email"], .form-account input[type="password"] {
+.form-account input[type="email"], .form-account input[type="password"], .form-account input[type="text"], .form-account select {
     margin-bottom: 15px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     border: 1px solid #eaeaea;
     box-shadow: none;
     font-size: 12px;
+}
+
+.form-control.timezone-select {
+  font-size: 12px;
+  height: 39px;
 }
 
 .form-account .btn-login {
@@ -385,7 +390,7 @@ a.logo span {
 .league-row {
     float: left;
     margin-top: 13px;
-    margin-left: 64px;
+    margin-left: calc(50% - 81px);
 }
 
 /*notification*/
@@ -1331,33 +1336,31 @@ h3.timeline-title {
 
 /*---revenue----*/
 
-.revenue-head {
-    background: #ff6c60;
+.panel-head {
     -webkit-border-radius: 4px 4px 0px 0px;
     border-radius: 4px 4px 0px 0px;
     color: #fff;
     line-height: 50px;
 }
 
-.revenue-head span {
-    background: #e56155;
+.panel-head span {
     padding: 16px;
     -webkit-border-radius: 4px 0px 0px 0px;
     border-radius: 4px 0px 0px 0px;
 }
 
-.revenue-head span i {
+.panel-head span i {
     font-size: 18px;
 }
 
-.revenue-head h3 {
+.panel-head h3 {
     display: inline;
     padding: 0 10px;
     font-size: 16px;
     font-weight: 300;
 }
 
-.revenue-head span.rev-combo {
+.panel-head span.rev-combo {
     background: #e56155;
     padding: 16px;
     line-height: normal;

@@ -13,6 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require react
+//= require react_ujs
+//= require fluxxor
+//= require ./stores/new_match_store
+//= require ./stores/dashboard_matches_store
+//= require ./stores/stores
 //= require bootstrap.js
 //= require jquery.dcjqaccordion.2.7.js
 //= require jquery.scrollTo.min.js
@@ -20,4 +26,9 @@
 //= require jquery.nicescroll.js
 //= require respond.min.js
 //= require common-scripts.js
+//= require bootstrap-datepicker
+//= require bootstrap-timepicker
+//= require advanced-form-components
+//= require toastr
+//= require moment
 //= require_tree .

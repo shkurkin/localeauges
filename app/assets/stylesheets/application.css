@@ -13,9 +13,12 @@
 *= require bootstrap
 *= require bootstrap-reset
 *= require slidebars
+*= require datepicker
+*= require timepicker
 *= require style-responsive
 *= require style
 *= require font-awesome
+*= require toastr
 *= require_tree .
 *= require_self
 */

@@ -1,0 +1,113 @@
+/* NEW MATCH */
+
+ul.select-list {
+  border: 1px solid #e2e2e4;
+  height: 200px;
+  overflow-y: scroll;
+  border-radius: 3px;
+}
+
+ul.select-list li {
+  padding: 2px 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+ul.select-list li:hover {
+  background-color: #2A3542;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.search-input {
+  margin-bottom: 8px;
+}
+
+.remove-selected-item {
+  line-height: 19px;
+  float: right;
+  cursor: pointer;
+}
+
+li.selected-item {
+  background: #dff0d8;
+  border-bottom: 1px solid #e2e2e4 !important;
+  cursor: inherit !important;
+}
+
+.detail-date {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 30px;
+}
+
+.detail-time {
+  text-align: center;
+  font-size: 24px;
+}
+
+.detail-location {
+  text-align: center;
+  font-size: 24px;
+  margin: 30px 0;
+}
+
+.set-up-match {
+  text-align: center;
+}
+
+h2 {
+  word-break: break-word;
+}
+
+li.selected-item span {
+  max-width: 90%;
+  display: inline-block;
+  word-break: break-all;
+}
+
+ul li {
+  word-wrap: break-word;
+}
+
+.modal-location-img {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 20px;
+  word-wrap: break-word;
+}
+
+.modal-vs {
+  margin-bottom: 10px;
+}
+
+.select-teams {
+  font-size: 14px;
+  color: #667fa0;
+}
+
+.select-match {
+  margin-bottom: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.select-match.first {
+  border: none;
+  padding-top: 0;
+}
+
+.select-match:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.detail-location-address.next-match {
+  margin-bottom: 20px;
+}
+.small {
+  font-size: 12px;
+}

@@ -23,11 +23,16 @@ FactoryGirl.define do
   end
 
   factory :match do
+    datetime Time.now
   end
 
   factory :result do
   end
 
   factory :location do
+    sequence(:name) { |n| "location#{n}" }
+    sequence(:address) { |n| "83#{n} Market St, San Francisco, CA 94103" }
+    lat 37.779814
+    lng 122.3940954
   end
 end
