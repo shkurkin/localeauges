@@ -6,9 +6,14 @@ class Team < ActiveRecord::Base
   validates_uniqueness_of :name
 
   def self.generate_name
-    name = Faker::App.name + Faker::Number.number(5);
+    names = ["Team Awesome", "Beagles", "The Canadians", "xxDestoryersxx",
+      "emancipators", "Foobars", "Germz", "The Haters", "Ions", "Ja Feel",
+      "North Korea", "The Losers", "Meercats", "No Shows", "The OhEmGeez",
+      "Porto Potties", "Qi", "Randy", "Stoopids", "Team", "Usefuls",
+      "Vandals", "Whut", "XXX", "YoYos", "Zoombinis"]
+    name = names.sample + rand(1000...9999);
     while(Team.find_by_name(name)) do
-      name = Faker::App.name + Faker::Number.number(5);
+      name = names.sample + rand(1000...9999);
     end
     name
   end
