@@ -2,10 +2,10 @@
 require File.expand_path('../application', __FILE__)
 
 ActionMailer::Base.smtp_settings = {
-  :user_name => 'localeagues',
-  :password => 'eliiscool1',
-  :domain => 'localeagues.com',
-  :address => 'smtp.sendgrid.net',
+  :user_name => '',
+  :password => '',
+  :domain => '',
+  :address => '',
   :port => 587,
   :authentication => :plain,
   :enable_starttls_auto => true
