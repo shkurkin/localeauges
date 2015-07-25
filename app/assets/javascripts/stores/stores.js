@@ -1,11 +1,13 @@
 var stores =  {
   NewMatchStore: new NewMatchStore(),
-  DashboardMatchStore: new DashboardMatchStore()
+  DashboardMatchStore: new DashboardMatchStore(),
+  MatcesStore: new MatchesStore()
 };
 
 var actions = {};
 $.extend(actions, NewMatchActions);
 $.extend(actions, DashboardMatchActions);
+$.extend(actions, MatchesActions);
 
 var flux = new Fluxxor.Flux(stores, actions);
 

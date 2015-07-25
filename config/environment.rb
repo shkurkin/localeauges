@@ -2,8 +2,8 @@
 require File.expand_path('../application', __FILE__)
 
 ActionMailer::Base.smtp_settings = {
-  :user_name => 'localeagues',
-  :password => 'eliiscool1',
+  :user_name => ENV['SENDGRID_USR'],
+  :password => ENV['SENDGRID_PWD'],
   :domain => 'localeagues.com',
   :address => 'smtp.sendgrid.net',
   :port => 587,
