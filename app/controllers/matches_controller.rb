@@ -1,5 +1,37 @@
 class MatchesController < ApplicationController
-  before_action :set_user, only: [:new, :create]
+  before_action :set_user, only: [:index, :new, :create]
+
+  def index
+    @matches = @user.matches.order(datetime: :desc)
+    gon.matches = {
+      all: []
+    }
+
+    @matches.each do |match|
+      teams = match.teams.order(:name).map do |team|
+        users_team = false;
+        players = team.users.map { |player|
+          users_team = true if player.id == @user.id
+          {email: player.email}
+        }
+
+        {
+          name: team.name,
+          players: players,
+          users_team: users_team
+        }
+      end
+
+      out = {
+        teams: teams,
+        datetime: match.datetime,
+        location: match.location,
+        results: match.results
+      }
+
+      gon.matches[:all].push(out)
+    end
+  end
 
   def new
     @match = Match.new

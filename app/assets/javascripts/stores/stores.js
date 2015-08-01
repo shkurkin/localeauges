@@ -1,7 +1,7 @@
 var stores =  {
   NewMatchStore: new NewMatchStore(),
   DashboardMatchStore: new DashboardMatchStore(),
-  MatcesStore: new MatchesStore()
+  MatchesStore: new MatchesStore()
 };
 
 var actions = {};

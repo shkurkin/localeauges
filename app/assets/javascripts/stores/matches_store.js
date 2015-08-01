@@ -5,6 +5,7 @@ var MatchesConstants = {
 var MatchesStore = Fluxxor.createStore({
   initialize: function() {
     if(typeof(gon) == 'undefined' || typeof(gon.matches) == 'undefined'){
+      this.matches = {};
       this.matches.all = [];
       this.matches.fresh = false;
     }
