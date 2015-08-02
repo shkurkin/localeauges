@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
   get '/teams/generate_name',  to: 'teams#generate_name'
   post '/teams/define_teams_for_match', to: 'teams#define_teams_for_match'
+  post '/results/record_match_results', to: 'results#record_match_results'
 
   devise_for :users
   resources :leagues, only: [:index, :show]
-  resources :matches, only: [:create, :new]
+  resources :matches, only: [:index, :create, :new]
   resources :teams,   only: [:show]
 
 

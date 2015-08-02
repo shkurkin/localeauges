@@ -18,6 +18,7 @@
 //= require fluxxor
 //= require ./stores/new_match_store
 //= require ./stores/dashboard_matches_store
+//= require ./stores/matches_store
 //= require ./stores/stores
 //= require bootstrap.js
 //= require jquery.dcjqaccordion.2.7.js
