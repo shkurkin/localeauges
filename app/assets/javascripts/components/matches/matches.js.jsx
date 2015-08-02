@@ -19,11 +19,11 @@ var MatchesInner = React.createClass({
     this.getFlux().actions.matchesFreshen(domGon);
   },
 
-  updateResults(data) {
+  updateResults: function(data) {
     this.getFlux().actions.updateResults(data);
   },
 
-  recordResults(match_id) {
+  recordResults: function(match_id) {
     var $modal = $(event.target).closest('.modal');
     var usersTeamScore = $modal.find('.users-team-score .match-score-input').val();
     var usersTeamDetail = $modal.find('.users-team-score .match-details').val();
