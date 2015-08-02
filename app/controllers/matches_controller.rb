@@ -18,7 +18,8 @@ class MatchesController < ApplicationController
         {
           name: team.name,
           players: players,
-          users_team: users_team
+          users_team: users_team,
+          id: team.id
         }
       end
 
@@ -26,7 +27,8 @@ class MatchesController < ApplicationController
         teams: teams,
         datetime: match.datetime,
         location: match.location,
-        results: match.results
+        results: match.results,
+        id: match.id
       }
 
       gon.matches[:all].push(out)

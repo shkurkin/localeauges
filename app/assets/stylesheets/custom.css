@@ -111,3 +111,10 @@ ul li {
 .small {
   font-size: 12px;
 }
+.score-title {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.top-buffer {
+  margin-top: 12px;
+}
