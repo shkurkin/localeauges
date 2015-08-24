@@ -42,6 +42,7 @@ gem 'figaro', '~> 1.1.1'
 gem 'pg', '~> 0.18.2'
 gem 'foreman', '~> 0.78.0'
 gem 'font-awesome-rails', '~> 4.3.0.0'
+gem 'aws-sdk', '~> 2.1.15'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -63,4 +64,3 @@ group :development, :test do
   gem 'shoulda-matchers', '~>2.8.0'
   gem 'shoulda'
 end
-
