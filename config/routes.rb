@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   resources :leagues, only: [:index, :show]
   resources :matches, only: [:index, :create, :new]
   resources :teams,   only: [:show]
-  resources :users,   only: [:edit]
+  resources :users,   only: [:show, :edit]
   resources :images,  only: [:create]
 
 
