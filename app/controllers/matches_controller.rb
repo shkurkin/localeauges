@@ -68,7 +68,7 @@ class MatchesController < ApplicationController
       MatchMailer.new_match(@match).deliver
       render "matches/modal", layout: false
     else
-      render json: new_team.errors, status: :unprocessable_entity
+      render json: @match.errors, status: :unprocessable_entity
     end
   end
 

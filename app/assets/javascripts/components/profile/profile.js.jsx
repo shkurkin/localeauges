@@ -27,7 +27,7 @@ var ProfileInner = React.createClass({
           <ProfilePicture name={this.state.name}/>
         </div>
         <div className="col-lg-9">
-          <ProfileStatus statusHistory={[]} />
+          <ProfilePosts postsHistory={[]} userId={this.state.id}/>
         </div>
       </div>
     );

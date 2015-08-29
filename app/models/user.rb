@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_and_belongs_to_many :teams
   has_many :messages
+  has_many :posts
   has_many :leagues, through: :teams
   has_many :matches, through: :teams
 

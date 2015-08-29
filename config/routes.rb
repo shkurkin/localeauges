@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :teams,   only: [:show]
   resources :users,   only: [:show, :edit]
   resources :images,  only: [:create]
+  resources :posts,   only: [:create]
 
 
   root to: "dashboard#index"
