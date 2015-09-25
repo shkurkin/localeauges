@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if(@post.save)
-      render 200
+      render status: 200
     else
       render json: @post.errors, status: :unprocessable_entity
     end
